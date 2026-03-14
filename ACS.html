@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watches & Jewelry - RcultureIL</title>
+    <style>
+        /* Base Reset & Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ccc;
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+            position: relative;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .header-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 25px;
+        }
+
+        /* Interactive Moon */
+        .moon-container {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            z-index: 20;
+        }
+
+        .moon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            box-shadow: inset -8px 2px 0 0 #fff; 
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+        }
+
+        .moon:hover {
+            transform: scale(1.1) rotate(10deg);
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.9));
+        }
+
+        /* Background Effects: Ice Sparkles (No Chains) */
+        #accessories-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+            animation: twinkle alternate infinite;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.3) rotate(0deg); }
+            100% { opacity: 0.9; transform: scale(1.2) rotate(45deg); }
+        }
+
+        /* Layout */
+        .page-wrapper {
+            position: relative;
+            z-index: 2; 
+            flex-grow: 1;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 28px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 40px 0 10px 0;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* Main Grid Content */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)); 
+            gap: 20px 15px; 
+            padding: 0 20px 40px 20px;
+            max-width: 650px;
+            margin: 0 auto; 
+            width: 100%;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            min-width: 0; 
+            background: #000; 
+            border-radius: 8px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px); 
+        }
+
+        .img-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1; 
+            background-color: #1a1a1a; 
+            border-radius: 8px; 
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block; 
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0; 
+            padding-top: 5px;
+        }
+
+        .product-title {
+            font-size: 12px; 
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            color: #fff;
+            width: 100%;
+        }
+
+        .product-seller {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .new-price {
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Discount Modal Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: #111;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: #fff; }
+
+        .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px; }
+        .modal-text { color: #ccc; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+        
+        .discount-code {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #fff;
+            color: #000;
+            font-weight: 800;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            font-size: 16px;
+            user-select: all;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            position: relative;
+            z-index: 10;
+            background-color: #000;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .arrow-up { cursor: pointer; }
+
+        /* Responsive Design */
+        @media (max-width: 700px) { 
+            .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } 
+            .moon-container { top: 20px; right: 20px; }
+        }
+        @media (max-width: 500px) { 
+            .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px;}
+            header { flex-direction: column; gap: 15px; }
+            .moon-container { top: 120px; right: 20px; } /* Adjust for mobile stacked header */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="accessories-bg">
+        </div>
+
+    <div class="moon-container">
+        <div class="moon" id="promo-moon" title="Click for a surprise"></div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <span>Search</span>
+            <span style="color: #666;">R cultureIL</span>
+        </div>
+        <nav class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop All</a>
+            <a href="tracksuits.html">Track Suits</a>
+            <a href="accessories.html" style="color:#ccc;">Watches & Jewelry</a>
+            <a href="A.html">About</a>
+        </nav>
+        <div>
+            <a href="AC.html">Account</a>
+        </div>
+    </header>
+
+    <div class="page-wrapper">
+        <h1 class="page-title">Luxury Timepieces</h1>
+        <p class="page-subtitle">ROLEX, CARTIER & SEIKO</p>
+        
+        <div class="product-grid">
+            <a href="#" class="product-card">
+                <div class="img-container">
+                    <img src="ROLEX1.png" alt="Rolex Submariner">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" dir="rtl">Rolex Submariner Date</div>
+                    <div class="product-seller">Rolex Official</div>
+                    <div class="price-container">
+                        <span class="new-price">48,500 ₪</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-container">
+                    <img src="CARTIER1.png" alt="Cartier Santos">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" dir="rtl">Cartier Santos Medium</div>
+                    <div class="product-seller">Cartier Official</div>
+                    <div class="price-container">
+                        <span class="new-price">25,200 ₪</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-container">
+                    <img src="SEIKO1.png" alt="Seiko 5 Sports">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" dir="rtl">Seiko 5 Sports GMT</div>
+                    <div class="product-seller">Seiko Official</div>
+                    <div class="price-container">
+                        <span class="new-price">2,100 ₪</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-container">
+                    <img src="ROLEX2.png" alt="Rolex Datejust">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" dir="rtl">Rolex Datejust 41mm</div>
+                    <div class="product-seller">Rolex Official</div>
+                    <div class="price-container">
+                        <span class="new-price">39,000 ₪</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-container">
+                    <img src="CARTIER2.png" alt="Cartier Love Bracelet">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" dir="rtl">Cartier Love Bracelet</div>
+                    <div class="product-seller">Cartier Official</div>
+                    <div class="price-container">
+                        <span class="new-price">29,500 ₪</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-container">
+                    <img src="SEIKO2.png" alt="Seiko Presage">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" dir="rtl">Seiko Presage Cocktail Time</div>
+                    <div class="product-seller">Seiko Official</div>
+                    <div class="price-container">
+                        <span class="new-price">1,850 ₪</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-left">
+            <div>R Culture IL® </div>
+        </div>
+        <div class="arrow-up" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">&#710;</div>
+    </footer>
+
+    <div class="modal-overlay" id="discount-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2 class="modal-title">You Found the Moon! 🌙</h2>
+            <p class="modal-text">Enjoy 10% off your entire shipping cost on any luxury timepiece order. Use the code below at checkout.</p>
+            <div class="discount-code">MOON10</div>
+        </div>
+    </div>
+
+    <script>
+        // Sparkle Generator (No Chains)
+        const bg = document.getElementById('accessories-bg');
+        const sparkleCount = 40; 
+
+        for(let i = 0; i < sparkleCount; i++) {
+            let star = document.createElement('div');
+            star.className = 'sparkle';
+            
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            
+            star.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+            star.style.animationDelay = (Math.random() * 3) + 's';
+            
+            const baseScale = Math.random() * 0.5 + 0.5;
+            star.style.transform = `scale(${baseScale})`;
+
+            bg.appendChild(star);
+        }
+
+        // Modal Logic
+        const moon = document.getElementById('promo-moon');
+        const modal = document.getElementById('discount-modal');
+        const closeBtn = document.getElementById('close-modal');
+
+        moon.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
