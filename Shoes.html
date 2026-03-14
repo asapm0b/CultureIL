@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes - RcultureIL</title>
+    <style>
+        /* Base Reset & Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ccc;
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 25px;
+        }
+
+        /* Carousel Section */
+        main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+            width: 100%;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .nav-arrow {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 20;
+            transition: color 0.2s, transform 0.2s;
+            padding: 10px;
+        }
+
+        .nav-arrow:hover {
+            color: #888;
+            transform: scale(1.1);
+        }
+
+        .carousel-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Blur Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* Shoe Card Styling */
+        .shoe-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250px;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-info {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .product-price {
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        /* Hide description by default */
+        .product-description {
+            display: none;
+            font-size: 11px;
+            color: #ccc;
+            margin-top: 8px;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        /* Carousel States */
+        .shoe-item.active {
+            opacity: 1;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.2);
+            z-index: 10;
+            pointer-events: auto;
+            filter: blur(0px);
+            cursor: zoom-in;
+        }
+
+        .shoe-item.prev {
+            opacity: 0.5;
+            left: 15%;
+            transform: translate(-50%, -50%) scale(0.8);
+            z-index: 5;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: blur(2px);
+        }
+
+        .shoe-item.next {
+            opacity: 0.5;
+            left: 85%;
+            transform: translate(-50%, -50%) scale(0.8);
+            z-index: 5;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: blur(2px);
+        }
+
+        .shoe-item.hidden {
+            opacity: 0;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            z-index: 1;
+        }
+
+        /* Expanded State (When Clicked) */
+        .shoe-item.expanded {
+            opacity: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1.6);
+            z-index: 50;
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        .shoe-item.expanded .product-description {
+            display: block;
+            animation: fadeIn 0.4s ease forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ig-link:hover { opacity: 0.6; }
+        .arrow-up { cursor: pointer; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            /* Fix for Mobile Header */
+            header {
+                flex-wrap: wrap;
+                padding: 15px 20px;
+            }
+            .header-left {
+                flex: 1; /* Pushes the Account link to the right */
+            }
+            .nav-center {
+                order: 3; /* Forces navigation links to their own row at the bottom */
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-top: 15px;
+            }
+
+            /* Adjustments for the carousel */
+            .shoe-item.prev { left: 10%; transform: translate(-50%, -50%) scale(0.65); }
+            .shoe-item.next { left: 90%; transform: translate(-50%, -50%) scale(0.65); }
+            .shoe-item.active { transform: translate(-50%, -50%) scale(1); }
+            .shoe-item.expanded { transform: translate(-50%, -50%) scale(1.3); }
+            .carousel-wrapper { height: 350px; }
+        }
+        
+        @media (max-width: 500px) { 
+            .nav-arrow { font-size: 30px; padding: 5px; }
+            .nav-center { gap: 12px; font-size: 12px; } /* Slightly tighter links for very small screens */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header>
+        <div class="header-left">
+            <span>Search</span>
+            <span style="color: #666;">R cultureIL</span>
+        </div>
+        <nav class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop All Items</a>
+            <a href="shoes.html" style="color: #ccc;">Shoes</a>
+            <a href="A.html">About</a>
+            <a href="S.html">Shipping</a>
+        </nav>
+        <div>
+            <a href="AC.html">Account</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="carousel-wrapper">
+            <button class="nav-arrow" id="left-arrow">&#10094;</button>
+            
+            <div class="carousel-track" id="track">
+                
+                <div class="shoe-item">
+                    <div class="img-container"><img src="J41.png" alt="Air Jordan 4"></div>
+                    <div class="product-info">
+                        <div class="product-title">Air Jordan 4 Retro White Cement</div>
+                        <div class="product-price">₪ 380</div>
+                        <div class="product-description">Classic Joradan 4 design featuring white leather and cement grey.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="YE.png" alt="Yeezy Boost 350"></div>
+                    <div class="product-info">
+                        <div class="product-title">Yeezy Boost 350</div>
+                        <div class="product-price">₪ 320</div>
+                        <div class="product-description">Primeknit upper paired with full-length Boost midsole technology for unmatched comfort and a sleek, modern silhouette.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="STRL.png" alt="Nike Dunk Low Strange Love"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Dunk Low "Strange Love"</div>
+                        <div class="product-price">₪ 410</div>
+                        <div class="product-description">Crushed velvet base with suede overlays. Originally released in celebration of Valentine's Day, this pair is pure luxury.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="2070.png" alt="New Balance 9060"></div>
+                    <div class="product-info">
+                        <div class="product-title">New Balance 9060</div>
+                        <div class="product-price">₪ 350</div>
+                        <div class="product-description">A bold, futuristic take on classic 99X series styling, featuring wavy lines, premium suede, and chunky ABZORB cushioning.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="travi.png" alt="Travis Scott Jordan 1 Fragment"></div>
+                    <div class="product-info">
+                        <div class="product-title">Travis Scott Jordan 1 Fragment</div>
+                        <div class="product-price">₪ 360</div>
+                        <div class="product-description">The highly coveted triple collaboration featuring the signature reverse Swoosh and premium blue, black, and white leather.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="OFW.png" alt="Off-White Air Force"></div>
+                    <div class="product-info">
+                        <div class="product-title">Off-White Air Force "Lot 36"</div>
+                        <div class="product-price">₪ 3</div>
+                        <div class="product-description">Part of the iconic "Dear Summer" collection. Features Virgil Abloh's signature zip-ties, exposed foam, and secondary lacing system.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="CDSS.png" alt="Christian Dior CD"></div>
+                    <div class="product-info">
+                        <div class="product-title">Christian Dior CD Grey</div>
+                        <div class="product-price">₪ 500</div>
+                        <div class="product-description">High-fashion meets streetwear. Crafted in Italy with premium materials and featuring the iconic Dior Oblique motif.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="AF1.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Air Force 1 Low '07</div>
+                        <div class="product-price">₪ 450</div>
+                        <div class="product-description">The ultimate streetwear staple. Crisp all-white leather, classic lines, and Air cushioning that never goes out of style.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="ADID.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Adidas Campus 00s</div>
+                        <div class="product-price">₪ 240</div>
+                        <div class="product-description">Y2K skate culture brought back to life. Features thick laces, chunky suede proportions, and undeniable retro appeal.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="LVS1.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Louis Vuitton LV Trainer</div>
+                        <div class="product-price">₪ 410</div>
+                        <div class="product-description">Designed by Virgil Abloh, featuring calf leather, intricate monogram details, and seven hours of stitching per pair.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="PGE.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">NK SB Dunk Low Black Pigeon</div>
+                        <div class="product-price">₪ 370</div>
+                        <div class="product-description">Built for the board but adopted by the streets. Equipped with a padded tongue and Zoom Air unit for ultimate impact absorption.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="DNK.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Dunk Panda</div>
+                        <div class="product-price">₪ 230</div>
+                        <div class="product-description">From the pitch to the pavement. Signature T-toe design, smooth leather, and a gum rubber outsole keep this silhouette timeless.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="NB20.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">New Balance 2000</div>
+                        <div class="product-price">₪ 480</div>
+                        <div class="product-description">A vintage basketball Oxford revived from the 1989 archives. Clean, simple, and the definition of a versatile daily driver.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="AJ1L.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Air Jordan 1 Retro High OG</div>
+                        <div class="product-price">₪ 210</div>
+                        <div class="product-description">The sneaker that started it all. Premium leather construction featuring iconic color-blocking and the classic Wings logo.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="YEZ.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Yeezy Slides</div>
+                        <div class="product-price">₪ 750</div>
+                        <div class="product-description">The pinnacle of gorpcore fashion. Trail-ready tech, Quicklace system, and aggressive lug traction wrapped in a sleek design.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="ASI.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Asics Gel-NYC</div>
+                        <div class="product-price">₪ 270</div>
+                        <div class="product-description">Early 2000s running aesthetics redefined. Featuring layered metallic panels and signature GEL technology cushioning.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="NKSL.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Mind Black 001</div>
+                        <div class="product-price">₪ 310</div>
+                        <div class="product-description">Nike's new Slipper for recovery and sports.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="AM1.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Air Max 95</div>
+                        <div class="product-price">₪ 370</div>
+                        <div class="product-description">Inspired by the human body, with the midsole representing the spine and graduated panels acting as muscles. Legendary comfort.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="BAP.png"></div>
+                    <div class="product-info">
+                        <div class="product-title">A Bathing Ape BAPE STA</div>
+                        <div class="product-price">₪ 270</div>
+                        <div class="product-description">A Tokyo streetwear icon. Featuring glossy patent leather, bold colorways, and the unmistakable star-shaped "STA" logo.</div>sc
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="NUME.png" alt="Numeri Pink Denim"></div>
+                    <div class="product-info">
+                        <div class="product-title">Numeri "Pink Denim"</div>
+                        <div class="product-price">₪ 500</div>
+                        <div class="product-description">Stand out with this unique pink denim construction. A bold statement piece for any streetwear enthusiast.</div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <button class="nav-arrow" id="right-arrow">&#10095;</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <div>R Culture IL® </div>
+            <a href="YOUR_INSTAGRAM_LINK_HERE" target="_blank" class="ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <div class="arrow-up" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">&#710;</div>
+    </footer>
+
+    <script>
+        const items = document.querySelectorAll('.shoe-item');
+        const leftBtn = document.getElementById('left-arrow');
+        const rightBtn = document.getElementById('right-arrow');
+        const overlay = document.getElementById('overlay');
+        let currentIndex = 0;
+        let isExpanded = false;
+
+        function updateCarousel() {
+            items.forEach((item, index) => {
+                // Remove state classes (including expanded)
+                item.classList.remove('active', 'prev', 'next', 'hidden', 'expanded');
+
+                if (index === currentIndex) {
+                    item.classList.add('active');
+                } else if (index === (currentIndex - 1 + items.length) % items.length) {
+                    item.classList.add('prev');
+                } else if (index === (currentIndex + 1) % items.length) {
+                    item.classList.add('next');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Ensure overlay gets hidden when carousel moves
+            closeExpanded();
+        }
+
+        function closeExpanded() {
+            isExpanded = false;
+            overlay.classList.remove('show');
+            const expandedItem = document.querySelector('.shoe-item.expanded');
+            if (expandedItem) expandedItem.classList.remove('expanded');
+        }
+
+        // Close when clicking the blurry background
+        overlay.addEventListener('click', closeExpanded);
+
+        // Navigate Left
+        leftBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        });
+
+        // Navigate Right
+        rightBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        });
+
+        // Handle clicking the shoes
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                if (item.classList.contains('prev') || item.classList.contains('next')) {
+                    // Bring clicked side-shoe to the center
+                    currentIndex = index;
+                    updateCarousel();
+                } else if (item.classList.contains('active')) {
+                    // If it's already in the center, toggle the expanded view
+                    if (!isExpanded) {
+                        item.classList.add('expanded');
+                        overlay.classList.add('show');
+                        isExpanded = true;
+                    } else {
+                        // Clicking it again closes it
+                        closeExpanded();
+                    }
+                }
+            });
+        });
+
+        // Initialize display
+        updateCarousel();
+    </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RcultureIL</title>
+    <style>
+        /* Base Reset & Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on phones */
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ccc;
+        }
+
+        /* --- Mobile-Optimized Header --- */
+        header {
+            display: flex;
+            flex-direction: column;
+            padding: 15px 20px 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .brand-text {
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Horizontally scrollable navigation for phones */
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            width: 100%;
+            padding-bottom: 5px;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-links a {
+            white-space: nowrap; 
+        }
+
+        /* --- Number Pop Animation --- */
+        #live-inventory {
+            display: inline-block;
+        }
+
+        @keyframes numberPop {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; color: #aaa; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animating {
+            animation: numberPop 0.4s ease-out;
+        }
+
+        /* --- Banner Section --- */
+        .banner-section {
+            position: relative;
+            width: 100%;
+            height: 250px; 
+            background-color: #000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .banner-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; 
+        }
+
+        .rcultureil-text {
+            font-family: 'Georgia', serif; 
+            font-size: 36px; 
+            font-weight: normal; 
+            letter-spacing: 2px; 
+            color: #fff;
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            white-space: nowrap; 
+        }
+
+        .shop-btn {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 8px 24px;
+            background-color: transparent; 
+            border: 1px solid #fff; 
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease; 
+        }
+
+        .shop-btn:active, .shop-btn:hover {
+            background-color: #fff; 
+            color: #000; 
+        }
+
+        /* --- Mobile Grid Content (2 Columns) --- */
+        main {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .category-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 220px; 
+            padding-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-box img {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .category-box span {
+            font-size: 11px;
+            font-weight: 500;
+            z-index: 2; 
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 12px; 
+        }
+
+        .ig-link {
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- LIVE SEARCH OVERLAY STYLES --- */
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .search-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .close-search {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-search:hover {
+            color: #aaa;
+        }
+
+        .search-container {
+            width: 85%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .search-container input {
+            background: none;
+            border: none;
+            border-bottom: 2px solid #fff;
+            color: #fff;
+            font-size: 20px;
+            padding: 15px 5px;
+            outline: none;
+            text-align: left; /* Changed back to left alignment for standard English/Hebrew mix */
+            width: 100%;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .live-results {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+            scrollbar-width: none; 
+        }
+
+        .live-results::-webkit-scrollbar { display: none; }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .item-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-align: right; /* Helps with Hebrew text alignment */
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+
+        .item-category {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+        }
+
+        .no-results {
+            color: #666;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        /* Media Query for tablet/desktop */
+        @media (min-width: 768px) {
+            header { flex-direction: row; justify-content: space-between; padding: 20px 40px; }
+            .header-top { width: auto; margin-bottom: 0; gap: 20px; }
+            .nav-links { width: auto; overflow: visible; padding-bottom: 0; }
+            .rcultureil-text { font-size: 50px; }
+            main { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 40px; }
+            .category-box { height: 450px; padding-bottom: 30px; }
+            .category-box img { max-height: 250px; }
+            .search-container input { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <a href="#" id="search-trigger">Search</a>
+            <span class="brand-text">R cultureIL</span>
+            <a href="#">Account</a>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="T.html">Shop <span id="live-inventory">891</span> Items</a>
+            <a href="A.html">About</a>
+            <a href="SH.html">Shipping</a>
+        </nav>
+    </header>
+
+    <div class="search-overlay" id="search-overlay">
+        <button class="close-search" id="close-search">&times;</button>
+        <div class="search-container">
+            <input type="text" id="live-search-input" placeholder="Search sneakers, apparel..." autocomplete="off">
+            <div id="live-results" class="live-results"></div>
+        </div>
+    </div>
+
+    <div class="banner-section">
+        <div class="banner-content">
+            <div class="rcultureil-text">R cultureIL</div>
+            <a href="shoes.html" class="shop-btn">Shop</a>
+        </div>
+    </div>
+
+    <main>
+        <a href="shoes.html" class="category-box">
+            <img src="CD.jpg" alt="Sneakers">
+            <span>Shop Sneakers &gt;</span>
+        </a>
+
+        <a href="T.html" class="category-box">
+            <img src="EST.jpg" alt="Apparel">
+            <span>Shop T-Shirts &gt;</span>
+        </a>
+
+        <a href="TR.html" class="category-box">
+            <img src="crtz.jpg" alt="Bags">
+            <span>Shop Tracks &gt;</span>
+        </a>
+
+        <a href="AC.html" class="category-box">
+            <img src="L.jpg" alt="Accessories">
+            <span>Shop Accessories &gt;</span>
+        </a>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <div>R Culture IL® </div>
+            <a href="https://www.instagram.com/rcultureil/" target="_blank" class="ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <div class="arrow-up" style="cursor: pointer;" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">&#710;</div>
+    </footer>
+
+    <script>
+        // --- Live Inventory Script ---
+        function updateLiveInventory() {
+            const inventorySpan = document.getElementById('live-inventory');
+            if(!inventorySpan) return;
+
+            let currentNumber = parseInt(inventorySpan.innerText);
+            let randomChange = Math.floor(Math.random() * 9) - 4; 
+            
+            if (randomChange === 0) {
+                randomChange = 1;
+            }
+
+            let newNumber = currentNumber + randomChange;
+
+            if (newNumber > 910) newNumber = 891;
+            if (newNumber < 870) newNumber = 891;
+
+            inventorySpan.innerText = newNumber;
+
+            inventorySpan.classList.remove('animating');
+            void inventorySpan.offsetWidth; 
+            inventorySpan.classList.add('animating');
+        }
+
+        setInterval(updateLiveInventory, 3500);
+
+        // --- Master Live Search Script ---
+        const searchTrigger = document.getElementById('search-trigger');
+        const searchOverlay = document.getElementById('search-overlay');
+        const closeSearch = document.getElementById('close-search');
+        const searchInput = document.getElementById('live-search-input');
+        const resultsContainer = document.getElementById('live-results');
+
+        // Master Database - Now includes all the shirts from T.html!
+        const productDatabase = [
+            // --- SHOES ---
+            { name: "Air Jordan 4 Retro White Cement", category: "Shoes", link: "shoes.html" },
+            { name: "Yeezy Boost 350", category: "Shoes", link: "shoes.html" },
+            { name: "Nike Dunk Low 'Strange Love'", category: "Shoes", link: "shoes.html" },
+            { name: "New Balance 9060", category: "Shoes", link: "shoes.html" },
+            { name: "Travis Scott Jordan 1 Fragment", category: "Shoes", link: "shoes.html" },
+            { name: "Off-White Air Force 'Lot 36'", category: "Shoes", link: "shoes.html" },
+            { name: "Christian Dior CD grey", category: "Shoes", link: "shoes.html" },
+            { name: "Numeri 'Pink Denim'", category: "Shoes", link: "shoes.html" },
+            { name: "Jordan 4 Retro 'Military Black'", category: "Shoes", link: "shoes.html" },
+            { name: "Jordan 4 Retro 'Bred Reimagined'", category: "Shoes", link: "shoes.html" },
+            
+            // --- APPAREL ---
+            { name: "Corteiz Alcatraz Cargo Pants", category: "Apparel", link: "T.html" },
+            { name: "Corteiz Rules The World Tee", category: "Apparel", link: "T.html" },
+            { name: "Essentials Fear of God Hoodie", category: "Apparel", link: "T.html" },
+            { name: "Amiri חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Essentials חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Louis Vuitton חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Nike חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Corteiz חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Balenciaga חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Palm Angels חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "BAPE חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Stussy חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Dior חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Chrome Hearts חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Travis Scott חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Vlone חולצה 220g", category: "Apparel", link: "T.html" },
+            { name: "Fear of God חולצה 220g", category: "Apparel", link: "T.html" },
+            
+            // --- BAGS & ACCESSORIES ---
+            { name: "Supreme Waist Bag Black", category: "Bags", link: "bags.html" },
+            { name: "Chrome Hearts Ring", category: "Accessories", link: "accessories.html" }
+        ];
+
+        // Open Overlay
+        searchTrigger.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            searchOverlay.classList.add('active');
+            setTimeout(() => searchInput.focus(), 100);
+        });
+
+        // Close logic
+        const closeOverlay = () => {
+            searchOverlay.classList.remove('active');
+            searchInput.value = ''; // Reset input
+            resultsContainer.innerHTML = ''; // Clear results
+        };
+
+        closeSearch.addEventListener('click', closeOverlay);
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+                closeOverlay();
+            }
+        });
+
+        // Live Search Logic
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            resultsContainer.innerHTML = ''; 
+
+            if (query.length > 0) {
+                const matches = productDatabase.filter(product => 
+                    product.name.toLowerCase().includes(query) || 
+                    product.category.toLowerCase().includes(query)
+                );
+
+                if (matches.length > 0) {
+                    matches.forEach(item => {
+                        const resultLink = document.createElement('a');
+                        resultLink.href = item.link; 
+                        resultLink.className = 'result-item';
+                        // Keep text layout clean with Hebrew/English mix
+                        resultLink.innerHTML = `
+                            <span class="item-category">${item.category}</span>
+                            <span class="item-name" dir="auto">${item.name}</span>
+                        `;
+                        resultsContainer.appendChild(resultLink);
+                    });
+                } else {
+                    resultsContainer.innerHTML = '<div class="no-results">No items found matching "' + query + '"</div>';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

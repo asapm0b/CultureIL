@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - RcultureIL</title>
+    <style>
+        /* Base Reset & Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ccc;
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 25px;
+        }
+
+        /* About Section */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            width: 100%;
+        }
+
+        .about-container {
+            max-width: 800px;
+            text-align: center;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .about-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .about-text {
+            font-size: 15px;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .about-highlight {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ig-link:hover { opacity: 0.6; }
+        .arrow-up { cursor: pointer; transition: color 0.2s; }
+        .arrow-up:hover { color: #888; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+                padding: 15px 20px;
+            }
+            .header-left {
+                flex: 1;
+            }
+            .nav-center {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-top: 15px;
+            }
+
+            .about-title {
+                font-size: 24px;
+            }
+            .about-text {
+                font-size: 14px;
+                text-align: left; /* Easier to read on mobile */
+            }
+        }
+        
+        @media (max-width: 500px) { 
+            .nav-center { gap: 12px; font-size: 12px; }
+            main { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <span>Search</span>
+            <span style="color: #666;">R cultureIL</span>
+        </div>
+        <nav class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop All Items</a>
+            <a href="shoes.html">Shoes</a>
+            <a href="A.html" style="color: #ccc;">About</a> <a href="S.html">Shipping</a>
+        </nav>
+        <div>
+            <a href="AC.html">Account</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="about-container">
+            <h1 class="about-title">About R Culture IL</h1>
+            
+            <p class="about-text">
+                Welcome to <span class="about-highlight">R Culture IL</span>, your premier destination for highly coveted sneakers, exclusive streetwear, and luxury fashion in Israel. We believe that what you wear is an extension of your identity, and we are here to provide you with the rarest and most sought-after pieces on the market.
+            </p>
+            
+            <p class="about-text">
+                Born out of a deep passion for sneaker culture and high-end design, we curate our collection to ensure authenticity, quality, and style. From iconic Jordans and limited Yeezys to high-fashion collaborations from houses like Dior and Louis Vuitton, we bridge the gap between street culture and luxury.
+            </p>
+
+            <p class="about-text">
+                Every item we sell is 100% authentic, thoroughly inspected, and sourced globally. Whether you are an avid collector, a fashion enthusiast, or just looking for that perfect everyday pair, R Culture IL is committed to elevating your rotation.
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <div>R Culture IL® </div>
+            <a href="YOUR_INSTAGRAM_LINK_HERE" target="_blank" class="ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <div class="arrow-up" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">&#710;</div>
+    </footer>
+
+</body>
+</html>

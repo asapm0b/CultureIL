@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - RcultureIL</title>
+    <style>
+        /* Base Reset & Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ccc;
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 25px;
+        }
+
+        /* Main Grid Content - Set to 3 Columns and smaller max-width */
+        main {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)); 
+            gap: 20px 15px; 
+            padding: 40px 20px;
+            max-width: 650px; /* Reduced from 900px to make the boxes smaller */
+            margin: 0 auto; 
+            width: 100%;
+        }
+
+        /* Product Card Styling */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            min-width: 0; 
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px); 
+        }
+
+        /* Image Box inside the card */
+        .img-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1; 
+            background-color: #1a1a1a; 
+            border-radius: 8px; 
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block; 
+        }
+
+        /* The small badge in the top right */
+        .badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Text area under the image */
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0; 
+        }
+
+        .product-title {
+            font-size: 12px; 
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            color: #fff;
+            width: 100%;
+        }
+
+        .product-seller {
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Price Styling */
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .old-price {
+            position: relative;
+            font-size: 11px;
+            color: #888;
+            display: inline-block;
+        }
+
+        .old-price::after {
+            content: "";
+            position: absolute;
+            left: -2px;
+            right: -2px;
+            top: 50%;
+            height: 1px;
+            background-color: #888;
+            transform: rotate(-15deg); 
+        }
+
+        .new-price {
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ig-link:hover { opacity: 0.6; }
+        .arrow-up { cursor: pointer; }
+
+        /* Responsive Design */
+        @media (max-width: 700px) { main { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 500px) { 
+            main { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px;}
+            header { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <span>Search</span>
+            <span style="color: #666;">R cultureIL</span>
+        </div>
+        <nav class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="index.html">Shop 271 Items</a>
+            <a href="A.html">About</a>
+            <a href="S.html">Shipping</a>
+        </nav>
+        <div>
+            <a href="AC.html">Account</a>
+        </div>
+    </header>
+
+    <main>
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="A1.png" alt="Amiri">
+                <div class="badge">+4</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Amiri חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Amiri Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="ES.png" alt="Essentials">
+                <div class="badge">+7</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Essentials חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Essentials Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="LVV.png">
+                <div class="badge">+2</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Louis Vuitton חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">LV Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="COM.png" alt="Nike">
+                <div class="badge">+2</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Nike חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Nike Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="CORT.png" alt="Corteiz">
+                <div class="badge">+5</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Corteiz חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Corteiz Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="BA.png" alt="Balenciaga">
+                <div class="badge">+6</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Balenciaga חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Balenciaga Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="plm.png" alt="Palm Angels">
+                <div class="badge">+9</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Palm Angels חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Palm Angels Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="BP.png" alt="BAPE">
+                <div class="badge">+11</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">BAPE חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">BAPE Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="stussy.png" alt="Stussy">
+                <div class="badge">+5</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Stussy חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Stussy Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="D1.png" alt="Dior">
+                <div class="badge">+2</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Dior חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Dior Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="CHR.png">
+                <div class="badge">+3</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Chrome Hearts חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Chrome Hearts Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="TRA.png" alt="Travis Scott">
+                <div class="badge">+15</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Travis Scott חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Travis Scott Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="VL.png" alt="Vlone">
+                <div class="badge">+8</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Vlone חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Vlone Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card">
+            <div class="img-container">
+                <img src="FOGG.png" alt="Fear of God">
+                <div class="badge">+6</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title" dir="rtl">Fear of God חולצה 220g || חולצות במבצע</div>
+                <div class="product-seller">Fear of God Official</div>
+                <div class="price-container">
+                    <span class="old-price">100 ₪</span>
+                    <span class="new-price">85 ₪</span>
+                </div>
+            </div>
+        </a>
+
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <div>R Culture IL® </div>
+            <a href="YOUR_INSTAGRAM_LINK_HERE" target="_blank" class="ig-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <div class="arrow-up" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">&#710;</div>
+    </footer>
+
+</body>
+</html>
