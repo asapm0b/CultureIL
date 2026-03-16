@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sneakers — R Culture IL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+            --gray-dim: rgba(255,255,255,0.08);
+            --gray-border: rgba(255,255,255,0.12);
+            --gray-text: #666;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ─── CUSTOM CURSOR ─── */
+        .cursor {
+            width: 10px; height: 10px;
+            background: var(--white);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s ease, height 0.25s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor.hovering { width: 36px; height: 36px; }
+
+        /* ─── GRAIN ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
+        }
+
+        /* ─── TICKER ─── */
+        .ticker {
+            width: 100%;
+            overflow: hidden;
+            background: var(--white);
+            color: var(--black);
+            padding: 7px 0;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .ticker-inner {
+            display: inline-block;
+            animation: ticker 22s linear infinite;
+        }
+        .ticker-inner span {
+            display: inline-block;
+            padding: 0 50px;
+        }
+        .ticker-inner span::after { content: '•'; margin-left: 50px; }
+        @keyframes ticker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-border);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 54px;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex: 1;
+        }
+        .header-right { justify-content: flex-end; }
+
+        .h-nav-link {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: var(--gray-text);
+            transition: color 0.2s;
+            position: relative;
+        }
+        .h-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 0;
+            width: 0; height: 1px;
+            background: var(--white);
+            transition: width 0.3s ease;
+        }
+        .h-nav-link:hover, .h-nav-link.active { color: var(--white); }
+        .h-nav-link:hover::after { width: 100%; }
+        .h-nav-link.active::after { width: 100%; }
+
+        .header-brand {
+            font-family: var(--font-display);
+            font-size: 22px;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        /* ─── PAGE TITLE STRIP ─── */
+        .page-header {
+            border-bottom: 1px solid var(--gray-border);
+            padding: 28px 40px 24px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(52px, 8vw, 96px);
+            letter-spacing: 4px;
+            line-height: 1;
+            animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        .page-meta {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            padding-bottom: 6px;
+            animation: slideUp 0.8s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── MAIN CAROUSEL AREA ─── */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle dot-grid background */
+        main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            height: 440px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        /* ─── ARROWS ─── */
+        .nav-arrow {
+            background: none;
+            border: 1px solid var(--gray-border);
+            color: var(--white);
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: none;
+            z-index: 20;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .nav-arrow:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+            transform: scale(1.08);
+        }
+
+        /* ─── TRACK ─── */
+        .carousel-track {
+            position: relative;
+            flex: 1;
+            height: 100%;
+        }
+
+        /* ─── SHOE CARD ─── */
+        .shoe-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 240px;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #0d0d0d;
+            border: 1px solid var(--gray-border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .shoe-item.active .img-container img {
+            transform: scale(1.03);
+        }
+
+        .product-info {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .product-title {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .product-price {
+            font-family: var(--font-display);
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: var(--white);
+        }
+
+        .product-description {
+            display: none;
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+        }
+
+        /* ─── CAROUSEL STATES ─── */
+        .shoe-item.active {
+            opacity: 1;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.18);
+            z-index: 10;
+            pointer-events: auto;
+            cursor: none;
+            filter: none;
+        }
+
+        .shoe-item.prev {
+            opacity: 0.4;
+            left: 16%;
+            transform: translate(-50%, -50%) scale(0.78);
+            z-index: 5;
+            pointer-events: auto;
+            filter: blur(1.5px);
+        }
+
+        .shoe-item.next {
+            opacity: 0.4;
+            left: 84%;
+            transform: translate(-50%, -50%) scale(0.78);
+            z-index: 5;
+            pointer-events: auto;
+            filter: blur(1.5px);
+        }
+
+        .shoe-item.hidden {
+            opacity: 0;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.4);
+            pointer-events: none;
+        }
+
+        /* ─── EXPANDED STATE ─── */
+        .shoe-item.expanded {
+            opacity: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1.55);
+            z-index: 50;
+            pointer-events: auto;
+            cursor: none;
+            filter: none;
+        }
+
+        .shoe-item.expanded .product-description {
+            display: block;
+            animation: fadeIn 0.4s 0.2s ease both;
+        }
+
+        .shoe-item.expanded .img-container img {
+            transform: scale(1.06);
+        }
+
+        /* small "close" hint on expanded card */
+        .shoe-item.expanded .product-title::after {
+            content: ' ✕';
+            font-size: 9px;
+            color: var(--gray-text);
+            vertical-align: middle;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── BLUR OVERLAY ─── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            cursor: none;
+        }
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ─── COUNTER + HINT BAR ─── */
+        .carousel-meta {
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.8s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .counter-num {
+            font-family: var(--font-display);
+            font-size: 15px;
+            color: var(--white);
+        }
+
+        /* progress dots */
+        .dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 20px; height: 1px;
+            background: var(--gray-border);
+            transition: background 0.3s ease, width 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--white);
+            width: 32px;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ─── MARQUEE ─── */
+        .marquee-strip {
+            border-top: 1px solid var(--gray-border);
+            border-bottom: 1px solid var(--gray-border);
+            overflow: hidden;
+            padding: 13px 0;
+            margin-top: 10px;
+        }
+
+        .marquee-inner {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: marquee 30s linear infinite;
+        }
+
+        .marquee-item {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--gray-text);
+            padding: 0 40px;
+        }
+
+        .marquee-item b { color: var(--white); }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            border-top: 1px solid var(--gray-border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+        }
+
+        .footer-left { display: flex; align-items: center; gap: 14px; }
+
+        .ig-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px; height: 28px;
+            border: 1px solid var(--gray-border);
+            border-radius: 50%;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+        .ig-btn:hover { border-color: var(--white); background: var(--white); color: var(--black); }
+
+        .back-top {
+            cursor: none;
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: var(--font-body);
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-top:hover { color: var(--white); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            header { padding: 0 20px; }
+            .page-header { padding: 22px 20px 18px; }
+            .carousel-wrapper { height: 360px; padding: 0 10px; }
+            .shoe-item { width: 200px; }
+            .shoe-item.prev { left: 12%; transform: translate(-50%,-50%) scale(0.7); }
+            .shoe-item.next { left: 88%; transform: translate(-50%,-50%) scale(0.7); }
+            .shoe-item.expanded { transform: translate(-50%,-50%) scale(1.3); }
+            footer { padding: 16px 20px; }
+        }
+
+        @media (max-width: 600px) {
+            header { height: 48px; }
+            .header-brand { font-size: 18px; }
+            .carousel-wrapper { height: 300px; }
+            .shoe-item { width: 170px; }
+            .shoe-item.active { transform: translate(-50%,-50%) scale(1.05); }
+            .shoe-item.prev { left: 8%; transform: translate(-50%,-50%) scale(0.6); }
+            .shoe-item.next { left: 92%; transform: translate(-50%,-50%) scale(0.6); }
+            .shoe-item.expanded { transform: translate(-50%,-50%) scale(1.15); }
+        }
+
+        @media (hover: none) {
+            body { cursor: auto; }
+            .cursor { display: none; }
+            .nav-arrow, .back-top { cursor: pointer; }
+            .overlay { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-inner">
+            <span>Free Shipping on Orders Over ₪350</span>
+            <span>New Sneaker Drops Every Week</span>
+            <span>100% Best Seller</span>
+            <span>Israel's #1 Sneaker's</span>
+            <span>R Culture IL — Est. 2026</span>
+            <span>Free Shipping on Orders Over ₪350</span>
+            <span>New Sneaker Drops Every Week</span>
+            <span>100% Best Seller</span>
+            <span>Israel's #1 Sneaker's</span>
+            <span>R Culture IL — Est. 2026</span>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="h-nav-link">Home</a>
+            <a href="T.html" class="h-nav-link">Apparel</a>
+            <a href="ACS.html" class="h-nav-link">Accessories</a>
+        </div>
+
+        <div class="header-brand">R CULTURE IL</div>
+
+        <div class="header-right">
+            <a href="A.html" class="h-nav-link">About</a>
+            <a href="SH.html" class="h-nav-link">Shipping</a>
+            <a href="#" class="h-nav-link">Account</a>
+        </div>
+    </header>
+
+    <!-- PAGE TITLE -->
+    <div class="page-header">
+        <div class="page-title">Sneakers</div>
+        <div class="page-meta">20 styles available</div>
+    </div>
+
+    <!-- MARQUEE -->
+    <div class="marquee-strip">
+        <div class="marquee-inner">
+            <span class="marquee-item"><b>Jordan</b></span>
+            <span class="marquee-item">Nike</span>
+            <span class="marquee-item"><b>Yeezy</b></span>
+            <span class="marquee-item">New Balance</span>
+            <span class="marquee-item"><b>Off-White</b></span>
+            <span class="marquee-item">Dior</span>
+            <span class="marquee-item"><b>Travis Scott</b></span>
+            <span class="marquee-item">BAPE</span>
+            <span class="marquee-item"><b>Asics</b></span>
+            <span class="marquee-item">Louis Vuitton</span>
+            <span class="marquee-item"><b>Jordan</b></span>
+            <span class="marquee-item">Nike</span>
+            <span class="marquee-item"><b>Yeezy</b></span>
+            <span class="marquee-item">New Balance</span>
+            <span class="marquee-item"><b>Off-White</b></span>
+            <span class="marquee-item">Dior</span>
+            <span class="marquee-item"><b>Travis Scott</b></span>
+            <span class="marquee-item">BAPE</span>
+            <span class="marquee-item"><b>Asics</b></span>
+            <span class="marquee-item">Louis Vuitton</span>
+        </div>
+    </div>
+
+    <!-- CAROUSEL -->
+    <main>
+        <div class="carousel-wrapper">
+            <button class="nav-arrow" id="left-arrow">&#8592;</button>
+
+            <div class="carousel-track" id="track">
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="J41.png" alt="Air Jordan 4 White Cement"></div>
+                    <div class="product-info">
+                        <div class="product-title">Air Jordan 4 Retro White Cement</div>
+                        <div class="product-price">₪ 380</div>
+                        <div class="product-description">Classic Jordan 4 design featuring white leather and cement grey accents. An icon that never goes out of style.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="YE.png" alt="Yeezy Boost 350"></div>
+                    <div class="product-info">
+                        <div class="product-title">Yeezy Boost 350</div>
+                        <div class="product-price">₪ 320</div>
+                        <div class="product-description">Primeknit upper paired with full-length Boost midsole for unmatched comfort and a sleek, modern silhouette.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="STRL.png" alt="Nike Dunk Low Strange Love"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Dunk Low "Strange Love"</div>
+                        <div class="product-price">₪ 410</div>
+                        <div class="product-description">Crushed velvet base with suede overlays. Originally released for Valentine's Day — this pair is pure luxury.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="2070.png" alt="New Balance 9060"></div>
+                    <div class="product-info">
+                        <div class="product-title">New Balance 9060</div>
+                        <div class="product-price">₪ 350</div>
+                        <div class="product-description">A bold futuristic take on classic 99X styling with wavy lines, premium suede, and chunky ABZORB cushioning.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="travi.png" alt="Travis Scott Jordan 1 Fragment"></div>
+                    <div class="product-info">
+                        <div class="product-title">Travis Scott Jordan 1 Fragment</div>
+                        <div class="product-price">₪ 360</div>
+                        <div class="product-description">The highly coveted triple collab. Signature reverse Swoosh, premium blue, black, and white leather construction.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="OFW.png" alt="Off-White Air Force Lot 36"></div>
+                    <div class="product-info">
+                        <div class="product-title">Off-White Air Force "Lot 36"</div>
+                        <div class="product-price">₪ 490</div>
+                        <div class="product-description">Part of the iconic "Dear Summer" collection. Virgil Abloh's signature zip-ties, exposed foam, and secondary lacing.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="CDSS.png" alt="Christian Dior CD Grey"></div>
+                    <div class="product-info">
+                        <div class="product-title">Christian Dior CD Grey</div>
+                        <div class="product-price">₪ 500</div>
+                        <div class="product-description">High fashion meets streetwear. Crafted in Italy with premium materials and the iconic Dior Oblique motif.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="AF1.png" alt="Nike Air Force 1 Low"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Air Force 1 Low '07</div>
+                        <div class="product-price">₪ 450</div>
+                        <div class="product-description">The ultimate streetwear staple. Crisp all-white leather, classic lines, and Air cushioning that never goes out of style.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="ADID.png" alt="Adidas Campus 00s"></div>
+                    <div class="product-info">
+                        <div class="product-title">Adidas Campus 00s</div>
+                        <div class="product-price">₪ 240</div>
+                        <div class="product-description">Y2K skate culture brought back to life. Thick laces, chunky suede proportions, and undeniable retro appeal.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="LVS1.png" alt="Louis Vuitton LV Trainer"></div>
+                    <div class="product-info">
+                        <div class="product-title">Louis Vuitton LV Trainer</div>
+                        <div class="product-price">₪ 410</div>
+                        <div class="product-description">Designed by Virgil Abloh. Calf leather, intricate monogram details, and seven hours of stitching per pair.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="PGE.png" alt="Nike SB Dunk Low Black Pigeon"></div>
+                    <div class="product-info">
+                        <div class="product-title">NK SB Dunk Low Black Pigeon</div>
+                        <div class="product-price">₪ 370</div>
+                        <div class="product-description">Built for the board, adopted by the streets. Padded tongue and Zoom Air unit for ultimate impact absorption.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="DNK.png" alt="Nike Dunk Panda"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Dunk Panda</div>
+                        <div class="product-price">₪ 230</div>
+                        <div class="product-description">Signature T-toe design, smooth leather, and gum rubber outsole. Timeless black and white forever.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="NB20.png" alt="New Balance 2000"></div>
+                    <div class="product-info">
+                        <div class="product-title">New Balance 2000</div>
+                        <div class="product-price">₪ 480</div>
+                        <div class="product-description">A vintage basketball Oxford revived from 1989 archives. Clean, simple, the definition of a versatile daily driver.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="AJ1L.png" alt="Air Jordan 1 Retro High OG"></div>
+                    <div class="product-info">
+                        <div class="product-title">Air Jordan 1 Retro High OG</div>
+                        <div class="product-price">₪ 210</div>
+                        <div class="product-description">The sneaker that started it all. Premium leather, iconic color-blocking, and the classic Wings logo.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="YEZ.png" alt="Yeezy Slides"></div>
+                    <div class="product-info">
+                        <div class="product-title">Yeezy Slides</div>
+                        <div class="product-price">₪ 750</div>
+                        <div class="product-description">The pinnacle of gorpcore. Single-moulded EVA foam construction — impossibly light, unmistakably Yeezy.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="ASI.png" alt="Asics Gel-NYC"></div>
+                    <div class="product-info">
+                        <div class="product-title">Asics Gel-NYC</div>
+                        <div class="product-price">₪ 270</div>
+                        <div class="product-description">Early 2000s running aesthetics redefined. Layered metallic panels and signature GEL cushioning technology.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="NKSL.png" alt="Nike Mind Black 001"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Mind Black 001</div>
+                        <div class="product-price">₪ 310</div>
+                        <div class="product-description">Nike's latest recovery slipper — engineered foam, contoured footbed, and that unmistakable Nike DNA.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="AM1.png" alt="Nike Air Max 95"></div>
+                    <div class="product-info">
+                        <div class="product-title">Nike Air Max 95</div>
+                        <div class="product-price">₪ 370</div>
+                        <div class="product-description">Inspired by the human body. The midsole represents the spine, graduated panels act as muscles. Legendary comfort.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="BAP.png" alt="BAPE STA"></div>
+                    <div class="product-info">
+                        <div class="product-title">A Bathing Ape BAPE STA</div>
+                        <div class="product-price">₪ 270</div>
+                        <div class="product-description">A Tokyo streetwear icon. Glossy patent leather, bold colorways, and the unmistakable star-shaped STA logo.</div>
+                    </div>
+                </div>
+
+                <div class="shoe-item">
+                    <div class="img-container"><img src="NUME.png" alt="Numeri Pink Denim"></div>
+                    <div class="product-info">
+                        <div class="product-title">Numeri "Pink Denim"</div>
+                        <div class="product-price">₪ 500</div>
+                        <div class="product-description">Stand out with this unique pink denim construction. A bold statement piece for any streetwear enthusiast.</div>
+                    </div>
+                </div>
+
+            </div><!-- end track -->
+
+            <button class="nav-arrow" id="right-arrow">&#8594;</button>
+        </div>
+
+        <!-- counter + dots + hint -->
+        <div class="carousel-meta">
+            <div class="counter">
+                <span class="counter-num" id="counter-current">01</span>
+                <span>/</span>
+                <span id="counter-total">20</span>
+            </div>
+            <div class="dots" id="dots-container"></div>
+            <div class="hint">Tap to expand</div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-left">
+            <span>R Culture IL® 2025</span>
+            <a href="https://www.instagram.com/rcultureil/" target="_blank" class="ig-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
+    </footer>
+
+    <script>
+    // ── Cursor ──
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .shoe-item').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+
+    // ── Carousel ──
+    const items     = document.querySelectorAll('.shoe-item');
+    const leftBtn   = document.getElementById('left-arrow');
+    const rightBtn  = document.getElementById('right-arrow');
+    const overlay   = document.getElementById('overlay');
+    const counterEl = document.getElementById('counter-current');
+    const dotsWrap  = document.getElementById('dots-container');
+
+    const TOTAL = items.length;
+    let currentIndex = 0;
+    let isExpanded   = false;
+
+    // Build dots (max 8 visible as short lines)
+    const MAX_DOTS = 8;
+    const dotEls = [];
+    for (let i = 0; i < Math.min(TOTAL, MAX_DOTS); i++) {
+        const d = document.createElement('div');
+        d.className = 'dot';
+        dotsWrap.appendChild(d);
+        dotEls.push(d);
+    }
+
+    function updateDots() {
+        const segment = Math.floor(currentIndex / (TOTAL / MAX_DOTS));
+        dotEls.forEach((d, i) => {
+            d.classList.toggle('active', i === Math.min(segment, MAX_DOTS - 1));
+        });
+    }
+
+    function updateCarousel() {
+        items.forEach((item, index) => {
+            item.classList.remove('active', 'prev', 'next', 'hidden', 'expanded');
+            const diff = ((index - currentIndex) % TOTAL + TOTAL) % TOTAL;
+            if (diff === 0)            item.classList.add('active');
+            else if (diff === TOTAL-1) item.classList.add('prev');
+            else if (diff === 1)       item.classList.add('next');
+            else                       item.classList.add('hidden');
+        });
+        counterEl.textContent = String(currentIndex + 1).padStart(2, '0');
+        updateDots();
+        closeExpanded();
+    }
+
+    function closeExpanded() {
+        if (!isExpanded) return;
+        isExpanded = false;
+        overlay.classList.remove('show');
+        document.querySelectorAll('.shoe-item.expanded').forEach(el => el.classList.remove('expanded'));
+    }
+
+    overlay.addEventListener('click', closeExpanded);
+
+    leftBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + TOTAL) % TOTAL;
+        updateCarousel();
+    });
+
+    rightBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % TOTAL;
+        updateCarousel();
+    });
+
+    // keyboard nav
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  { currentIndex = (currentIndex - 1 + TOTAL) % TOTAL; updateCarousel(); }
+        if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % TOTAL; updateCarousel(); }
+        if (e.key === 'Escape')     closeExpanded();
+    });
+
+    items.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            if (item.classList.contains('prev') || item.classList.contains('next')) {
+                currentIndex = index;
+                updateCarousel();
+            } else if (item.classList.contains('active')) {
+                if (!isExpanded) {
+                    item.classList.add('expanded');
+                    overlay.classList.add('show');
+                    isExpanded = true;
+                } else {
+                    closeExpanded();
+                }
+            }
+        });
+    });
+
+    // swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 50) {
+            if (dx < 0) { currentIndex = (currentIndex + 1) % TOTAL; }
+            else        { currentIndex = (currentIndex - 1 + TOTAL) % TOTAL; }
+            updateCarousel();
+        }
+    });
+
+    updateCarousel();
+    </script>
+</body>
+</html>

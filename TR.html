@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tracksuits — R Culture IL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+            --gray-dim: rgba(255,255,255,0.08);
+            --gray-border: rgba(255,255,255,0.12);
+            --gray-text: #666;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+
+            /* season colors */
+            --summer-glow: rgba(255, 165, 0, 0.07);
+            --winter-glow: rgba(100, 180, 255, 0.07);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ─── CURSOR ─── */
+        .cursor {
+            width: 10px; height: 10px;
+            background: var(--white);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s ease, height 0.25s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor.hovering { width: 36px; height: 36px; }
+
+        /* ─── GRAIN ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
+        }
+
+        /* ─── SEASON BG LAYERS ─── */
+        .season-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .season-bg.active { opacity: 1; }
+
+        /* summer */
+        #summer-bg {
+            background: radial-gradient(circle at 80% 15%, var(--summer-glow) 0%, transparent 55%);
+        }
+        .sun {
+            position: absolute;
+            top: 8%; right: 12%;
+            width: 120px; height: 120px;
+            background: rgba(255, 200, 60, 0.12);
+            border-radius: 50%;
+            box-shadow: 0 0 80px rgba(255, 160, 0, 0.18);
+            animation: pulseSun 4s ease-in-out infinite alternate;
+        }
+        @keyframes pulseSun {
+            from { transform: scale(1); opacity: 0.7; }
+            to   { transform: scale(1.12); opacity: 1; }
+        }
+
+        /* winter */
+        #winter-bg {
+            background: radial-gradient(circle at 20% 80%, var(--winter-glow) 0%, transparent 60%);
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: rgba(200, 230, 255, 0.7);
+            user-select: none;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0%   { transform: translateY(-5vh) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ─── TICKER ─── */
+        .ticker {
+            width: 100%;
+            overflow: hidden;
+            background: var(--white);
+            color: var(--black);
+            padding: 7px 0;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .ticker-inner { display: inline-block; animation: ticker 22s linear infinite; }
+        .ticker-inner span { display: inline-block; padding: 0 50px; }
+        .ticker-inner span::after { content: '•'; margin-left: 50px; }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* ─── HEADER ─── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-border);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 54px;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex: 1;
+        }
+        .header-right { justify-content: flex-end; }
+
+        .h-nav-link {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            transition: color 0.2s;
+            position: relative;
+        }
+        .h-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 0;
+            width: 0; height: 1px;
+            background: var(--white);
+            transition: width 0.3s ease;
+        }
+        .h-nav-link:hover, .h-nav-link.active { color: var(--white); }
+        .h-nav-link:hover::after, .h-nav-link.active::after { width: 100%; }
+
+        .header-brand {
+            font-family: var(--font-display);
+            font-size: 22px;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        /* ─── PAGE HEADER ─── */
+        .page-header {
+            border-bottom: 1px solid var(--gray-border);
+            padding: 28px 40px 24px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+            animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(52px, 8vw, 96px);
+            letter-spacing: 4px;
+            line-height: 1;
+        }
+
+        .page-meta {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            padding-bottom: 6px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── SEASON SECTION ─── */
+        .season-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Section header bar */
+        .season-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 54px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .season-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .season-icon {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .season-label {
+            font-family: var(--font-display);
+            font-size: 28px;
+            letter-spacing: 3px;
+        }
+
+        .season-sub {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+        }
+
+        /* ─── MARQUEE ─── */
+        .marquee-strip {
+            border-bottom: 1px solid var(--gray-border);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .marquee-inner {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: marquee 28s linear infinite;
+        }
+        .marquee-item {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--gray-text);
+            padding: 0 40px;
+        }
+        .marquee-item b { color: var(--white); }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* ─── SEASON DIVIDER ─── */
+        .season-divider {
+            position: relative;
+            z-index: 2;
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            margin: 0;
+        }
+
+        /* ─── PRODUCT GRID ─── */
+        .product-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            gap: 1px;
+            background: var(--black);
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        /* ─── PRODUCT CARD ─── */
+        .product-card {
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.25s ease;
+            border: 1px solid var(--gray-border);
+        }
+        .product-card:hover { background: #080808; }
+
+        .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+        .img-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+        }
+        .product-card:hover .img-wrap img { transform: scale(1.06); }
+        .img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+            pointer-events: none;
+        }
+
+        /* BADGE */
+        .badge {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(0,0,0,0.75);
+            border: 1px solid var(--gray-border);
+            color: var(--white);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            backdrop-filter: blur(8px);
+            z-index: 2;
+        }
+
+        /* SALE TAG */
+        .sale-tag {
+            position: absolute;
+            top: 10px; left: 10px;
+            background: var(--white);
+            color: var(--black);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            z-index: 2;
+        }
+
+        /* season tag */
+        .season-tag {
+            position: absolute;
+            bottom: 10px; left: 10px;
+            font-size: 8px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            z-index: 2;
+        }
+        .season-tag.summer {
+            background: rgba(255,165,0,0.15);
+            border: 1px solid rgba(255,165,0,0.3);
+            color: #ffaa30;
+        }
+        .season-tag.winter {
+            background: rgba(100,180,255,0.12);
+            border: 1px solid rgba(100,180,255,0.25);
+            color: #80c8ff;
+        }
+
+        /* INFO */
+        .product-info {
+            padding: 14px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-top: 1px solid var(--gray-border);
+        }
+        .product-brand {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+        }
+        .product-title {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+        .old-price {
+            font-size: 11px;
+            color: #444;
+            text-decoration: line-through;
+            text-decoration-color: #444;
+        }
+        .new-price {
+            font-family: var(--font-display);
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+        .saving {
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #5aff5a;
+        }
+
+        /* hover arrow */
+        .card-arrow {
+            position: absolute;
+            bottom: 16px; right: 16px;
+            font-size: 16px;
+            color: var(--gray-text);
+            opacity: 0;
+            transform: translate(-4px, 4px);
+            transition: opacity 0.25s, transform 0.25s, color 0.25s;
+        }
+        .product-card:hover .card-arrow { opacity: 1; transform: translate(0,0); color: var(--white); }
+
+        /* ─── FOOTER ─── */
+        footer {
+            border-top: 1px solid var(--gray-border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            position: relative;
+            z-index: 10;
+            background: var(--black);
+        }
+        .footer-left { display: flex; align-items: center; gap: 14px; }
+        .ig-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px;
+            border: 1px solid var(--gray-border);
+            border-radius: 50%;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+        .ig-btn:hover { border-color: var(--white); background: var(--white); color: var(--black); }
+        .back-top {
+            cursor: none;
+            background: none; border: none;
+            color: var(--gray-text);
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+            font-family: var(--font-body);
+            transition: color 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .back-top:hover { color: var(--white); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 200px); } }
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .page-header, .season-header { padding: 20px 20px 16px; }
+            .product-grid { grid-template-columns: repeat(2, 160px); padding: 24px 0; }
+            footer { padding: 16px 20px; }
+        }
+        @media (max-width: 480px) { .product-grid { grid-template-columns: repeat(2, 140px); } }
+
+        @media (hover: none) {
+            body { cursor: auto; }
+            .cursor { display: none; }
+            .back-top { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+
+    <!-- SEASON BG LAYERS -->
+    <div id="summer-bg" class="season-bg active"><div class="sun"></div></div>
+    <div id="winter-bg" class="season-bg"></div>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-inner">
+            <span>Summer &amp; Winter Collections</span>
+            <span>Full Sets Available</span>
+            <span>Free Shipping Over ₪350</span>
+            <span>Premium Quality</span>
+            <span>New Drops Every Week</span>
+            <span>Summer &amp; Winter Collections</span>
+            <span>Full Sets Available</span>
+            <span>Free Shipping Over ₪350</span>
+            <span>Premium Quality</span>
+            <span>New Drops Every Week</span>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="h-nav-link">Home</a>
+            <a href="shoes.html" class="h-nav-link">Sneakers</a>
+            <a href="T.html" class="h-nav-link">T-Shirts</a>
+        </div>
+        <div class="header-brand">R CULTURE IL</div>
+        <div class="header-right">
+            <a href="A.html" class="h-nav-link">About</a>
+            <a href="SH.html" class="h-nav-link">Shipping</a>
+            <a href="#" class="h-nav-link">Account</a>
+        </div>
+    </header>
+
+    <!-- PAGE TITLE -->
+    <div class="page-header">
+        <div class="page-title">Tracksuits</div>
+        <div class="page-meta">6 sets · Summer &amp; Winter</div>
+    </div>
+
+    <!-- ══════════════ SUMMER ══════════════ -->
+    <section class="season-section" id="summer-section">
+
+        <div class="season-header">
+            <div class="season-name">
+                <span class="season-icon">☀</span>
+                <span class="season-label">Summer</span>
+            </div>
+            <span class="season-sub">Shorts &amp; Tees Sets</span>
+        </div>
+
+        <div class="marquee-strip">
+            <div class="marquee-inner">
+                <span class="marquee-item"><b>Essentials</b></span>
+                <span class="marquee-item">Corteiz</span>
+                <span class="marquee-item"><b>Syna World</b></span>
+                <span class="marquee-item">Summer Sets</span>
+                <span class="marquee-item"><b>Shorts &amp; Tees</b></span>
+                <span class="marquee-item">Lightweight</span>
+                <span class="marquee-item"><b>Essentials</b></span>
+                <span class="marquee-item">Corteiz</span>
+                <span class="marquee-item"><b>Syna World</b></span>
+                <span class="marquee-item">Summer Sets</span>
+                <span class="marquee-item"><b>Shorts &amp; Tees</b></span>
+                <span class="marquee-item">Lightweight</span>
+            </div>
+        </div>
+
+        <div class="product-grid">
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="ESSSS.png" alt="Essentials Summer">
+                    <div class="sale-tag">Sale</div>
+                    <div class="badge">+3 colors</div>
+                    <div class="season-tag summer">Summer</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Essentials</div>
+                    <div class="product-title" dir="auto">סט קצר קיץ</div>
+                    <div class="price-row">
+                        <span class="old-price">₪250</span>
+                        <span class="new-price">₪199</span>
+                        <span class="saving">−20%</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="CORSTEZZ.png" alt="Corteiz Summer">
+                    <div class="sale-tag">Sale</div>
+                    <div class="badge">+2 colors</div>
+                    <div class="season-tag summer">Summer</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Corteiz</div>
+                    <div class="product-title" dir="auto">סט קצר קיץ</div>
+                    <div class="price-row">
+                        <span class="old-price">₪280</span>
+                        <span class="new-price">₪220</span>
+                        <span class="saving">−21%</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="SY.png" alt="Syna World Summer">
+                    <div class="sale-tag">Sale</div>
+                    <div class="badge">+4 colors</div>
+                    <div class="season-tag summer">Summer</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Syna World</div>
+                    <div class="product-title" dir="auto">סט קצר קיץ</div>
+                    <div class="price-row">
+                        <span class="old-price">₪350</span>
+                        <span class="new-price">₪299</span>
+                        <span class="saving">−15%</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- DIVIDER / TRIGGER -->
+    <hr class="season-divider" id="trigger-line">
+
+    <!-- ══════════════ WINTER ══════════════ -->
+    <section class="season-section" id="winter-section">
+
+        <div class="season-header">
+            <div class="season-name">
+                <span class="season-icon">❄</span>
+                <span class="season-label">Winter</span>
+            </div>
+            <span class="season-sub">Hoodies &amp; Sweatpants Sets</span>
+        </div>
+
+        <div class="marquee-strip">
+            <div class="marquee-inner" style="animation-direction: reverse;">
+                <span class="marquee-item"><b>Corteiz</b></span>
+                <span class="marquee-item">HellStar</span>
+                <span class="marquee-item"><b>Fear of God</b></span>
+                <span class="marquee-item">Winter Sets</span>
+                <span class="marquee-item"><b>Full Suits</b></span>
+                <span class="marquee-item">Heavyweight</span>
+                <span class="marquee-item"><b>Corteiz</b></span>
+                <span class="marquee-item">HellStar</span>
+                <span class="marquee-item"><b>Fear of God</b></span>
+                <span class="marquee-item">Winter Sets</span>
+                <span class="marquee-item"><b>Full Suits</b></span>
+                <span class="marquee-item">Heavyweight</span>
+            </div>
+        </div>
+
+        <div class="product-grid">
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="CORT1.png" alt="Corteiz Winter">
+                    <div class="sale-tag">Sale</div>
+                    <div class="badge">+2 colors</div>
+                    <div class="season-tag winter">Winter</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Corteiz</div>
+                    <div class="product-title" dir="auto">חליפת חורף מלאה</div>
+                    <div class="price-row">
+                        <span class="old-price">₪600</span>
+                        <span class="new-price">₪499</span>
+                        <span class="saving">−17%</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="HELLS.png" alt="HellStar Winter">
+                    <div class="sale-tag">Sale</div>
+                    <div class="badge">+5 colors</div>
+                    <div class="season-tag winter">Winter</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">HellStar</div>
+                    <div class="product-title" dir="auto">חליפת חורף מלאה</div>
+                    <div class="price-row">
+                        <span class="old-price">₪240</span>
+                        <span class="new-price">₪200</span>
+                        <span class="saving">−17%</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="ESS1.png" alt="Fear of God Winter">
+                    <div class="sale-tag">Sale</div>
+                    <div class="badge">+3 colors</div>
+                    <div class="season-tag winter">Winter</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Fear of God</div>
+                    <div class="product-title" dir="auto">חליפת חורף מלאה</div>
+                    <div class="price-row">
+                        <span class="old-price">₪500</span>
+                        <span class="new-price">₪399</span>
+                        <span class="saving">−20%</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-left">
+            <span>R Culture IL® 2025</span>
+            <a href="https://www.instagram.com/rcultureil/" target="_blank" class="ig-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
+    </footer>
+
+    <script>
+    // ── Cursor ──
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .product-card').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+
+    // ── Season BG scroll swap ──
+    const triggerLine = document.getElementById('trigger-line');
+    const summerBg    = document.getElementById('summer-bg');
+    const winterBg    = document.getElementById('winter-bg');
+
+    // Snowflakes
+    const flakeChars = ['❄', '❅', '❆', '·', '°'];
+    for (let i = 0; i < 28; i++) {
+        const f = document.createElement('div');
+        f.className = 'snowflake';
+        f.textContent = flakeChars[Math.floor(Math.random() * flakeChars.length)];
+        f.style.left              = Math.random() * 100 + 'vw';
+        f.style.animationDuration = (Math.random() * 4 + 3) + 's';
+        f.style.animationDelay    = (Math.random() * 5) + 's';
+        f.style.fontSize          = (Math.random() * 10 + 8) + 'px';
+        f.style.opacity           = (Math.random() * 0.4 + 0.2).toString();
+        winterBg.appendChild(f);
+    }
+
+    window.addEventListener('scroll', () => {
+        const rect = triggerLine.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.5) {
+            summerBg.classList.remove('active');
+            winterBg.classList.add('active');
+        } else {
+            summerBg.classList.add('active');
+            winterBg.classList.remove('active');
+        }
+    }, { passive: true });
+    </script>
+</body>
+</html>

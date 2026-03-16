@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shipping — R Culture IL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+            --gray-dim: rgba(255,255,255,0.08);
+            --gray-border: rgba(255,255,255,0.12);
+            --gray-text: #666;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ─── CURSOR ─── */
+        .cursor {
+            width: 10px; height: 10px;
+            background: var(--white);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s ease, height 0.25s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor.hovering { width: 36px; height: 36px; }
+
+        /* ─── GRAIN ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
+        }
+
+        /* ─── TICKER ─── */
+        .ticker {
+            width: 100%;
+            overflow: hidden;
+            background: var(--white);
+            color: var(--black);
+            padding: 7px 0;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .ticker-inner { display: inline-block; animation: ticker 22s linear infinite; }
+        .ticker-inner span { display: inline-block; padding: 0 50px; }
+        .ticker-inner span::after { content: '•'; margin-left: 50px; }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* ─── HEADER ─── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-border);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 54px;
+        }
+
+        .header-left, .header-right {
+            display: flex; align-items: center;
+            gap: 22px; flex: 1;
+        }
+        .header-right { justify-content: flex-end; }
+
+        .h-nav-link {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            transition: color 0.2s;
+            position: relative;
+        }
+        .h-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 0;
+            width: 0; height: 1px;
+            background: var(--white);
+            transition: width 0.3s ease;
+        }
+        .h-nav-link:hover { color: var(--white); }
+        .h-nav-link:hover::after { width: 100%; }
+        .h-nav-link.active { color: var(--white); }
+        .h-nav-link.active::after { width: 100%; }
+
+        .header-brand {
+            font-family: var(--font-display);
+            font-size: 22px;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        /* ─── PAGE HEADER ─── */
+        .page-header {
+            border-bottom: 1px solid var(--gray-border);
+            padding: 28px 40px 24px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(52px, 8vw, 96px);
+            letter-spacing: 4px;
+            line-height: 1;
+        }
+
+        .page-meta {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            padding-bottom: 6px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── MARQUEE ─── */
+        .marquee-strip {
+            border-bottom: 1px solid var(--gray-border);
+            overflow: hidden;
+            padding: 13px 0;
+        }
+        .marquee-inner {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: marquee 30s linear infinite;
+        }
+        .marquee-item {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--gray-text);
+            padding: 0 40px;
+        }
+        .marquee-item b { color: var(--white); }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* ─── MAIN CONTENT ─── */
+        main {
+            flex-grow: 1;
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 40px 80px;
+            animation: fadeIn 0.6s 0.15s ease both;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ─── STAT ROW ─── */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--gray-border);
+            border: 1px solid var(--gray-border);
+            margin-bottom: 60px;
+        }
+
+        .stat-box {
+            background: var(--black);
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 52px;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+        }
+
+        /* ─── SECTION ─── */
+        .section {
+            border-top: 1px solid var(--gray-border);
+            padding: 40px 0;
+        }
+
+        .section:last-child {
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .section-num {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--gray-text);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 32px;
+            letter-spacing: 3px;
+        }
+
+        /* ─── TABLE ─── */
+        .shipping-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .shipping-table tr {
+            border-bottom: 1px solid var(--gray-border);
+            transition: background 0.2s;
+        }
+
+        .shipping-table tr:first-child {
+            border-top: 1px solid var(--gray-border);
+        }
+
+        .shipping-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .shipping-table td {
+            padding: 16px 0;
+            font-size: 13px;
+            font-weight: 300;
+            vertical-align: middle;
+        }
+
+        .shipping-table td:first-child {
+            color: var(--white);
+            width: 55%;
+        }
+
+        .shipping-table td:last-child {
+            color: var(--gray-text);
+            text-align: right;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .td-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .td-icon {
+            font-size: 16px;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .badge-free {
+            display: inline-block;
+            background: var(--white);
+            color: var(--black);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .badge-fast {
+            display: inline-block;
+            background: rgba(90,255,90,0.12);
+            border: 1px solid rgba(90,255,90,0.3);
+            color: #5aff5a;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* ─── POLICY GRID ─── */
+        .policy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--gray-border);
+            border: 1px solid var(--gray-border);
+        }
+
+        .policy-box {
+            background: var(--black);
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .policy-box:hover { background: #080808; }
+
+        .policy-icon {
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .policy-title {
+            font-family: var(--font-display);
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .policy-text {
+            font-size: 12px;
+            font-weight: 300;
+            color: var(--gray-text);
+            line-height: 1.7;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── FAQ ─── */
+        .faq-item {
+            border-bottom: 1px solid var(--gray-border);
+            overflow: hidden;
+        }
+
+        .faq-item:first-child {
+            border-top: 1px solid var(--gray-border);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            cursor: none;
+            user-select: none;
+            transition: color 0.2s;
+        }
+
+        .faq-question:hover { color: rgba(255,255,255,0.7); }
+
+        .faq-q-text {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .faq-toggle {
+            font-size: 18px;
+            color: var(--gray-text);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+            color: var(--white);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .faq-item.open .faq-answer { max-height: 200px; }
+
+        .faq-answer p {
+            font-size: 12px;
+            font-weight: 300;
+            color: var(--gray-text);
+            line-height: 1.75;
+            padding-bottom: 18px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── CONTACT CTA ─── */
+        .contact-cta {
+            margin-top: 60px;
+            border: 1px solid var(--gray-border);
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-cta:hover { border-color: rgba(255,255,255,0.3); }
+
+        .cta-text {}
+
+        .cta-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            margin-bottom: 6px;
+        }
+
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 12px 32px;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: color 0.3s;
+            flex-shrink: 0;
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--white);
+            transform: translateX(-101%);
+            transition: transform 0.35s cubic-bezier(0.7,0,0.3,1);
+        }
+        .cta-btn:hover { color: var(--black); }
+        .cta-btn:hover::before { transform: translateX(0); }
+        .cta-btn span { position: relative; z-index: 1; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            border-top: 1px solid var(--gray-border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+        }
+        .footer-left { display: flex; align-items: center; gap: 14px; }
+        .ig-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px;
+            border: 1px solid var(--gray-border);
+            border-radius: 50%;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+        .ig-btn:hover { border-color: var(--white); background: var(--white); color: var(--black); }
+        .back-top {
+            cursor: none;
+            background: none; border: none;
+            color: var(--gray-text);
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+            font-family: var(--font-body);
+            transition: color 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .back-top:hover { color: var(--white); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .page-header { padding: 20px 20px 16px; }
+            main { padding: 40px 20px 60px; }
+            .stat-row { grid-template-columns: repeat(3, 1fr); }
+            .stat-number { font-size: 36px; }
+            .policy-grid { grid-template-columns: 1fr; }
+            .contact-cta { flex-direction: column; align-items: flex-start; }
+            footer { padding: 16px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .stat-row { grid-template-columns: 1fr; }
+            .policy-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (hover: none) {
+            body { cursor: auto; }
+            .cursor { display: none; }
+            .back-top, .faq-question, .cta-btn { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-inner">
+            <span>Free Shipping on Orders Over ₪350</span>
+            <span>17-19 Business Days Delivery</span>
+            <span>Tracked on Every Order</span>
+            <span>Secure Packaging</span>
+            
+            <span>Free Shipping on Orders Over ₪350</span>
+            <span>17-19 Business Days Delivery</span>
+            <span>Tracked on Every Order</span>
+            <span>Secure Packaging</span>
+            
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="h-nav-link">Home</a>
+            <a href="shoes.html" class="h-nav-link">Sneakers</a>
+            <a href="T.html" class="h-nav-link">T-Shirts</a>
+        </div>
+        <div class="header-brand">R CULTURE IL</div>
+        <div class="header-right">
+            <a href="TR.html" class="h-nav-link">Tracks</a>
+            <a href="ACS.html" class="h-nav-link">Accessories</a>
+            <a href="SH.html" class="h-nav-link active">Shipping</a>
+        </div>
+    </header>
+
+    <!-- PAGE TITLE -->
+    <div class="page-header">
+        <div class="page-title">Shipping</div>
+        <div class="page-meta">Israel · Fast & Tracked</div>
+    </div>
+
+    <!-- MARQUEE -->
+    <div class="marquee-strip">
+        <div class="marquee-inner">
+            <span class="marquee-item"><b>Free</b></span>
+            <span class="marquee-item">Over ₪350</span>
+            <span class="marquee-item"><b>20-30 Days</b></span>
+            <span class="marquee-item">Tracked</span>
+            <span class="marquee-item"><b>Secure</b></span>
+            <span class="marquee-item">Authentic</span>
+            <span class="marquee-item"><b>Israel Wide</b></span>
+            <span class="marquee-item">Door to Door</span>
+            <span class="marquee-item"><b>Free</b></span>
+            <span class="marquee-item">Over ₪350</span>
+            <span class="marquee-item"><b>1–3 Days</b></span>
+            <span class="marquee-item">Tracked</span>
+            <span class="marquee-item"><b>Secure</b></span>
+            <span class="marquee-item">Authentic</span>
+            <span class="marquee-item"><b>Israel Wide</b></span>
+            <span class="marquee-item">Door to Door</span>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <main>
+
+        <!-- STAT ROW -->
+        <div class="stat-row">
+            <div class="stat-box">
+                <div class="stat-number">17-19</div>
+                <div class="stat-label">Business Days</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">₪350</div>
+                <div class="stat-label">Free Shipping Threshold</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Orders Tracked</div>
+            </div>
+        </div>
+
+        <!-- SECTION 01 — RATES -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-num">01</span>
+                <span class="section-title">Shipping Rates</span>
+            </div>
+            <table class="shipping-table">
+                <tr>
+                    <td>
+                        <div class="td-label">
+                            <span class="td-icon">📦</span>
+                            <span>Standard Shipping Is Included In the Orders<span class="badge-fast">Regular</span></span>
+                        </div>
+                    </td>
+                    <td>₪-</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="td-label">
+                            <span class="td-icon">✨</span>
+                            <span>Orders Over ₪350<span class="badge-free">Free</span></span>
+                        </div>
+                    </td>
+                    <td>₪0</td>
+                </tr>
+            
+        <!-- SECTION 02 — POLICIES -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-num">02</span>
+                <span class="section-title">Our Policies</span>
+            </div>
+            <div class="policy-grid">
+                <div class="policy-box">
+                    <div class="policy-icon"></div>
+                    <div class="policy-title">Tracked Delivery</div>
+                    <div class="policy-text">Every order ships with full tracking. You'll receive a tracking link via WhatsApp or SMS as soon as your order is dispatched.</div>
+                </div>
+                <div class="policy-box">
+                    <div class="policy-icon"></div>
+                    <div class="policy-title">Secure Packaging</div>
+                    <div class="policy-text">All items are professionally wrapped and protected. Sneakers ship in original boxes inside a sealed outer bag.</div>
+                </div>
+                <div class="policy-box">
+                    <div class="policy-icon"></div>
+                    <div class="policy-title">Returns & Exchanges</div>
+                    <div class="policy-text">We accept returns within 7 days of delivery. Items must be unworn, in original packaging. DM us on Instagram to start a return.</div>
+                </div>
+                <div class="policy-box">
+                    <div class="policy-icon"></div>
+                    <div class="policy-title">Authenticity Guarantee</div>
+                    <div class="policy-text">Every item is verified before it ships. If you receive anything that doesn't match what you ordered, we'll replace it immediately.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 03 — FAQ -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-num">03</span>
+                <span class="section-title">FAQ</span>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-q-text">How long does delivery take?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Standard delivery across Israel takes 1–3 business days. Express same-day delivery is available in Tel Aviv, Netanya, and Haifa for orders placed before 12:00 PM.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-q-text">How do I get free shipping?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>All orders over ₪350 automatically qualify for free standard shipping. No code needed — the discount applies at checkout.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-q-text">Do you ship outside Israel?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Currently we ship within Israel only. International shipping is coming soon — follow us on Instagram for updates.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-q-text">How will I know my order shipped?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>You'll receive a WhatsApp message with your tracking link as soon as your order leaves us. You can also DM us on Instagram anytime for a status update.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-q-text">Can I return or exchange an item?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes — within 7 days of delivery, items must be unworn and in original packaging. Message us on Instagram to start the process and we'll sort it out quickly.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-q-text">What if my item arrives damaged?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Take a photo immediately and send it to us on Instagram. We'll arrange a free replacement or full refund — no questions asked.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CONTACT CTA -->
+        <div class="contact-cta">
+            <div class="cta-text">
+                <div class="cta-label">Still have questions?</div>
+                <div class="cta-title">Hit Us Up on Instagram</div>
+            </div>
+            <a href="https://www.instagram.com/rcultureil/" target="_blank" class="cta-btn"><span>@rcultureil →</span></a>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-left">
+            <span>R Culture IL® 2025</span>
+            <a href="https://www.instagram.com/rcultureil/" target="_blank" class="ig-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/>
+                </svg>
+            </a>
+        </div>
+        <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
+    </footer>
+
+    <script>
+    // ── Cursor ──
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .faq-question, .policy-box').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+
+    // ── FAQ Accordion ──
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        });
+    });
+    </script>
+</body>
+</html>
