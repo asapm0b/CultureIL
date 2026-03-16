@@ -543,6 +543,51 @@
             .cursor { display: none; }
             .back-top, .faq-question, .cta-btn { cursor: pointer; }
         }
+
+        /* ─── MOBILE DRAWER ─── */
+        .menu-btn { background: none; border: 1px solid var(--gray-border); color: var(--white); width: 32px; height: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: none; padding: 0; transition: border-color .2s; flex-shrink: 0; }
+        .menu-btn:hover { border-color: rgba(255,255,255,.4); }
+        .menu-btn span { display: block; width: 14px; height: 1px; background: var(--white); transition: all .3s ease; }
+        .menu-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .menu-btn.open span:nth-child(2) { opacity: 0; width: 0; }
+        .menu-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 600; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+        .nav-drawer { position: fixed; top: 0; left: 0; width: min(300px, 82vw); height: 100dvh; background: #050505; border-right: 1px solid var(--gray-border); z-index: 700; transform: translateX(-100%); transition: transform .38s cubic-bezier(.16,1,.3,1); display: flex; flex-direction: column; overflow-y: auto; }
+        .nav-drawer.active { transform: translateX(0); }
+        .drawer-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--gray-border); flex-shrink: 0; }
+        .drawer-brand { font-family: var(--font-display); font-size: 17px; letter-spacing: 2px; }
+        .drawer-close { background: none; border: none; color: var(--gray-text); font-size: 24px; cursor: none; line-height: 1; transition: color .2s; }
+        .drawer-close:hover { color: var(--white); }
+        .drawer-section { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); padding: 14px 20px 5px; }
+        .drawer-link { display: flex; align-items: center; justify-content: space-between; padding: 13px 20px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); border-bottom: 1px solid rgba(255,255,255,.04); transition: color .2s, padding-left .25s; }
+        .drawer-link:hover, .drawer-link.current { color: var(--white); padding-left: 26px; }
+        .drawer-link .arr { font-size: 12px; opacity: .4; }
+        .drawer-foot { margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--gray-border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .drawer-foot-brand { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); }
+        .drawer-ig { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid var(--gray-border); border-radius: 50%; transition: all .2s; }
+        .drawer-ig:hover { border-color: var(--white); background: var(--white); color: var(--black); }
+        /* page name strip */
+        .page-name-strip { display: flex; align-items: center; gap: 8px; padding: 8px 40px; border-bottom: 1px solid var(--gray-border); background: rgba(255,255,255,.015); }
+        .page-name-strip a { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); transition: color .2s; }
+        .page-name-strip a:hover { color: var(--white); }
+        .page-name-strip .sep { color: var(--gray-text); font-size: 9px; }
+        .page-name-strip .current-page { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--white); }
+        @media (max-width: 767px) {
+            .page-name-strip { padding: 8px 16px; }
+            header { padding: 0 12px !important; }
+            .header-left > *:not(.menu-btn) { display: none; }
+            .header-right > *:not(.inventory-pill):not(.live-pill) { display: none; }
+        }
+
+
+        /* ─── MOBILE HEADER FIX ─── */
+        @media (max-width: 767px) {
+            header { padding: 0 12px !important; height: 50px !important; }
+            .header-left > *:not(.menu-btn) { display: none !important; }
+            .header-right .h-nav-link { display: none !important; }
+            .header-brand { font-size: 18px !important; }
+        }
     </style>
 </head>
 <body>
@@ -553,30 +598,54 @@
     <div class="ticker">
         <div class="ticker-inner">
             <span>Free Shipping on Orders Over ₪350</span>
-            <span>17-19 Business Days Delivery</span>
+            <span>1–3 Business Days Delivery</span>
             <span>Tracked on Every Order</span>
             <span>Secure Packaging</span>
-            
+            <span>100% Authentic Guaranteed</span>
             <span>Free Shipping on Orders Over ₪350</span>
-            <span>17-19 Business Days Delivery</span>
+            <span>1–3 Business Days Delivery</span>
             <span>Tracked on Every Order</span>
             <span>Secure Packaging</span>
-            
+            <span>100% Authentic Guaranteed</span>
         </div>
     </div>
+
+
+    <!-- NAV DRAWER -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+    <nav class="nav-drawer" id="nav-drawer">
+        <div class="drawer-top">
+            <span class="drawer-brand">R CULTURE IL</span>
+            <button class="drawer-close" id="drawer-close">×</button>
+        </div>
+        <div class="drawer-section">Shop</div>
+        <a href="shop.html" class="drawer-link">Our Collection <span class="arr">↗</span></a>
+        <a href="shoes.html" class="drawer-link">Sneakers <span class="arr">↗</span></a>
+        <a href="T.html" class="drawer-link">T-Shirts <span class="arr">↗</span></a>
+        <a href="TR.html" class="drawer-link">Tracksuits <span class="arr">↗</span></a>
+        <a href="ACS.html" class="drawer-link">Accessories <span class="arr">↗</span></a>
+        <div class="drawer-section">Info</div>
+        <a href="SH.html" class="drawer-link">Shipping <span class="arr">↗</span></a>
+        <a href="A.html" class="drawer-link">About <span class="arr">↗</span></a>
+        <a href="index.html" class="drawer-link">Home <span class="arr">↗</span></a>
+        <div class="drawer-foot">
+            <span class="drawer-foot-brand">R Culture IL® 2025</span>
+            <a href="https://www.instagram.com/rcultureil/" target="_blank" class="drawer-ig">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zM8 4.271a3.729 3.729 0 1 0 0 7.458 3.729 3.729 0 0 0 0-7.458zm0 1.441a2.287 2.287 0 1 1 0 4.574 2.287 2.287 0 0 1 0-4.574z"/></svg>
+            </a>
+        </div>
+    </nav>
 
     <!-- HEADER -->
     <header>
         <div class="header-left">
-            <a href="index.html" class="h-nav-link">Home</a>
-            <a href="shoes.html" class="h-nav-link">Sneakers</a>
-            <a href="T.html" class="h-nav-link">T-Shirts</a>
+            <button class="menu-btn" id="menu-btn">
+                <span></span><span></span><span></span>
+            </button>
         </div>
         <div class="header-brand">R CULTURE IL</div>
         <div class="header-right">
-            <a href="TR.html" class="h-nav-link">Tracks</a>
-            <a href="ACS.html" class="h-nav-link">Accessories</a>
-            <a href="SH.html" class="h-nav-link active">Shipping</a>
+            <a href="A.html" class="h-nav-link">About</a><a href="ACS.html" class="h-nav-link">Accessories</a>
         </div>
     </header>
 
@@ -591,7 +660,7 @@
         <div class="marquee-inner">
             <span class="marquee-item"><b>Free</b></span>
             <span class="marquee-item">Over ₪350</span>
-            <span class="marquee-item"><b>20-30 Days</b></span>
+            <span class="marquee-item"><b>1–3 Days</b></span>
             <span class="marquee-item">Tracked</span>
             <span class="marquee-item"><b>Secure</b></span>
             <span class="marquee-item">Authentic</span>
@@ -614,7 +683,7 @@
         <!-- STAT ROW -->
         <div class="stat-row">
             <div class="stat-box">
-                <div class="stat-number">17-19</div>
+                <div class="stat-number">1–3</div>
                 <div class="stat-label">Business Days</div>
             </div>
             <div class="stat-box">
@@ -638,12 +707,20 @@
                     <td>
                         <div class="td-label">
                             <span class="td-icon">📦</span>
-                            <span>Standard Shipping Is Included In the Orders<span class="badge-fast">Regular</span></span>
+                            <span>Standard Shipping (All Israel)<span class="badge-fast">Fast</span></span>
                         </div>
                     </td>
-                    <td>₪-</td>
+                    <td>₪35</td>
                 </tr>
-                
+                <tr>
+                    <td>
+                        <div class="td-label">
+                            <span class="td-icon">🚀</span>
+                            <span>Express Same-Day (Select Cities)</span>
+                        </div>
+                    </td>
+                    <td>₪60</td>
+                </tr>
                 <tr>
                     <td>
                         <div class="td-label">
@@ -653,7 +730,18 @@
                     </td>
                     <td>₪0</td>
                 </tr>
-            
+                <tr>
+                    <td>
+                        <div class="td-label">
+                            <span class="td-icon">📍</span>
+                            <span>Pick-Up Point (Natanya)</span>
+                        </div>
+                    </td>
+                    <td>Free</td>
+                </tr>
+            </table>
+        </div>
+
         <!-- SECTION 02 — POLICIES -->
         <div class="section">
             <div class="section-header">
@@ -662,22 +750,22 @@
             </div>
             <div class="policy-grid">
                 <div class="policy-box">
-                    <div class="policy-icon"></div>
+                    <div class="policy-icon">📬</div>
                     <div class="policy-title">Tracked Delivery</div>
                     <div class="policy-text">Every order ships with full tracking. You'll receive a tracking link via WhatsApp or SMS as soon as your order is dispatched.</div>
                 </div>
                 <div class="policy-box">
-                    <div class="policy-icon"></div>
+                    <div class="policy-icon">🔒</div>
                     <div class="policy-title">Secure Packaging</div>
                     <div class="policy-text">All items are professionally wrapped and protected. Sneakers ship in original boxes inside a sealed outer bag.</div>
                 </div>
                 <div class="policy-box">
-                    <div class="policy-icon"></div>
+                    <div class="policy-icon">↩️</div>
                     <div class="policy-title">Returns & Exchanges</div>
                     <div class="policy-text">We accept returns within 7 days of delivery. Items must be unworn, in original packaging. DM us on Instagram to start a return.</div>
                 </div>
                 <div class="policy-box">
-                    <div class="policy-icon"></div>
+                    <div class="policy-icon">✅</div>
                     <div class="policy-title">Authenticity Guarantee</div>
                     <div class="policy-text">Every item is verified before it ships. If you receive anything that doesn't match what you ordered, we'll replace it immediately.</div>
                 </div>
@@ -798,6 +886,27 @@
             if (!isOpen) item.classList.add('open');
         });
     });
+    
+    // ── Nav Drawer ──
+    (function() {
+        var menuBtn = document.getElementById('menu-btn');
+        var drawer  = document.getElementById('nav-drawer');
+        var overlay = document.getElementById('nav-overlay');
+        var closeBtn = document.getElementById('drawer-close');
+        if (!menuBtn) return;
+        function openDrawer()  { drawer.classList.add('active'); overlay.classList.add('active'); menuBtn.classList.add('open'); document.body.style.overflow='hidden'; }
+        function closeDrawer() { drawer.classList.remove('active'); overlay.classList.remove('active'); menuBtn.classList.remove('open'); document.body.style.overflow=''; }
+        menuBtn.addEventListener('click', openDrawer);
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
+        // highlight current page
+        var path = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.drawer-link').forEach(function(l){
+            if(l.getAttribute('href')===path) l.classList.add('current');
+        });
+    })();
+
     </script>
 </body>
 </html>
