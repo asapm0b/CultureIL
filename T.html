@@ -259,7 +259,6 @@
 
         .product-card:hover .img-wrap img { transform: scale(1.06); }
 
-        /* subtle inner border on image */
         .img-wrap::after {
             content: '';
             position: absolute;
@@ -268,7 +267,6 @@
             pointer-events: none;
         }
 
-        /* BADGE */
         .badge {
             position: absolute;
             top: 10px;
@@ -284,7 +282,6 @@
             z-index: 2;
         }
 
-        /* SALE RIBBON */
         .sale-tag {
             position: absolute;
             top: 10px;
@@ -299,7 +296,6 @@
             z-index: 2;
         }
 
-        /* INFO */
         .product-info {
             padding: 14px 16px 16px;
             display: flex;
@@ -350,7 +346,6 @@
             color: #5aff5a;
         }
 
-        /* hover arrow reveal */
         .card-arrow {
             position: absolute;
             bottom: 16px;
@@ -444,7 +439,6 @@
         .drawer-foot-brand { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); }
         .drawer-ig { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid var(--gray-border); border-radius: 50%; transition: all .2s; }
         .drawer-ig:hover { border-color: var(--white); background: var(--white); color: var(--black); }
-        /* page name strip */
         .page-name-strip { display: flex; align-items: center; gap: 8px; padding: 8px 40px; border-bottom: 1px solid var(--gray-border); background: rgba(255,255,255,.015); }
         .page-name-strip a { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); transition: color .2s; }
         .page-name-strip a:hover { color: var(--white); }
@@ -457,8 +451,6 @@
             .header-right > *:not(.inventory-pill):not(.live-pill) { display: none; }
         }
 
-
-        /* ─── MOBILE HEADER FIX ─── */
         @media (max-width: 767px) {
             header { padding: 0 12px !important; height: 50px !important; }
             .header-left > *:not(.menu-btn) { display: none !important; }
@@ -486,7 +478,6 @@
             <span>All Sizes Available</span>
         </div>
     </div>
-
 
     <!-- NAV DRAWER -->
     <div class="nav-overlay" id="nav-overlay"></div>
@@ -529,7 +520,7 @@
     <!-- PAGE TITLE -->
     <div class="page-header">
         <div class="page-title">T-Shirts</div>
-        <div class="page-meta">14 styles · 220g cotton</div>
+        <div class="page-meta">34 styles · 220g cotton</div>
     </div>
 
     <!-- FILTER BAR -->
@@ -538,6 +529,7 @@
         <button class="filter-btn" data-filter="luxury">Luxury</button>
         <button class="filter-btn" data-filter="streetwear">Streetwear</button>
         <button class="filter-btn" data-filter="sports">Sports</button>
+        <button class="filter-btn" data-filter="hype">Hype</button>
     </div>
 
     <!-- MARQUEE -->
@@ -549,48 +541,131 @@
             <span class="marquee-item">Nike</span>
             <span class="marquee-item"><b>Corteiz</b></span>
             <span class="marquee-item">Balenciaga</span>
-            <span class="marquee-item"><b>Palm Angels</b></span>
+            <span class="marquee-item"><b>HellStar</b></span>
             <span class="marquee-item">BAPE</span>
-            <span class="marquee-item"><b>Stussy</b></span>
+            <span class="marquee-item"><b>Sp5der</b></span>
             <span class="marquee-item">Dior</span>
             <span class="marquee-item"><b>Chrome Hearts</b></span>
-            <span class="marquee-item">Travis Scott</span>
+            <span class="marquee-item">Supreme</span>
+            <span class="marquee-item"><b>Off-White</b></span>
+            <span class="marquee-item">Gallery Dept</span>
+            <span class="marquee-item"><b>Represent</b></span>
+            <span class="marquee-item">Givenchy</span>
             <span class="marquee-item"><b>Amiri</b></span>
             <span class="marquee-item">Essentials</span>
             <span class="marquee-item"><b>Louis Vuitton</b></span>
             <span class="marquee-item">Nike</span>
             <span class="marquee-item"><b>Corteiz</b></span>
             <span class="marquee-item">Balenciaga</span>
-            <span class="marquee-item"><b>Palm Angels</b></span>
+            <span class="marquee-item"><b>HellStar</b></span>
             <span class="marquee-item">BAPE</span>
-            <span class="marquee-item"><b>Stussy</b></span>
+            <span class="marquee-item"><b>Sp5der</b></span>
             <span class="marquee-item">Dior</span>
             <span class="marquee-item"><b>Chrome Hearts</b></span>
-            <span class="marquee-item">Travis Scott</span>
+            <span class="marquee-item">Supreme</span>
+            <span class="marquee-item"><b>Off-White</b></span>
+            <span class="marquee-item">Gallery Dept</span>
+            <span class="marquee-item"><b>Represent</b></span>
+            <span class="marquee-item">Givenchy</span>
         </div>
     </div>
 
     <!-- GRID -->
     <main id="product-grid">
 
+        <!-- 1. Ralph Lauren -->
         <a href="#" class="product-card" data-category="luxury">
             <div class="img-wrap">
-                <img src="A1.png" alt="Amiri">
+                <img src="RLP.png" alt="Raulph Lauren">
                 <div class="sale-tag">Sale</div>
-                <div class="badge">+4 colors</div>
+                <div class="badge">+3 colors</div>
             </div>
             <div class="product-info">
-                <div class="product-brand">Amiri</div>
-                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="product-brand">Raulph Lauren</div>
+                <div class="product-title" dir="auto">חולצה 220g ורוד, שחור, אפור, לבן , ותכלת</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
         </a>
 
+        <!-- 2–5. All Corteiz / Cortiez -->
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="CORT.png" alt="Corteiz">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+5 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Corteiz</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="CORTP.png" alt="Cortiez">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+3 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Cortiez</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="CORTB.png" alt="Cortiez">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+5 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Cortiez</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="CORTBL.png" alt="Cortiez">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+3 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Cortiez</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 6. Essentials -->
         <a href="#" class="product-card" data-category="streetwear">
             <div class="img-wrap">
                 <img src="ES.png" alt="Essentials">
@@ -601,14 +676,222 @@
                 <div class="product-brand">Essentials</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
         </a>
 
+        <!-- 7. Represent -->
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="REP.png" alt="Represent">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+4 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Represent</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 8. Stone Island -->
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="STO.png" alt="Stone Island">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+7 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Stone Island</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 9. HellStar -->
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="HLS.png" alt="HellStar">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+8 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">HellStar</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 10. BAPE -->
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="BP.png" alt="BAPE">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+11 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">BAPE</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 11–12. Balenciaga -->
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="BA.png" alt="Balenciaga">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+6 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Balenciaga</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="BALE.png" alt="Balenciaga">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+4 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Balenciaga</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 13. Gallery Dept -->
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="GLD.png" alt="Gallery Dept">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+7 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Gallery Dept</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 14. Chrome Hearts -->
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="CHR.png" alt="Chrome Hearts">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+3 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Chrome Hearts</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 15–16. Amiri -->
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="A1.png" alt="Amiri">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+4 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Amiri</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="AT.png" alt="Amiri">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+6 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Amiri</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- 17. Stussy -->
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="stussy.png" alt="Stussy">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+5 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Stussy</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <!-- Remaining -->
         <a href="#" class="product-card" data-category="luxury">
             <div class="img-wrap">
                 <img src="LVV.png" alt="Louis Vuitton">
@@ -619,9 +902,9 @@
                 <div class="product-brand">Louis Vuitton</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -637,45 +920,9 @@
                 <div class="product-brand">Nike</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
-                </div>
-            </div>
-            <span class="card-arrow">↗</span>
-        </a>
-
-        <a href="#" class="product-card" data-category="streetwear">
-            <div class="img-wrap">
-                <img src="CORT.png" alt="Corteiz">
-                <div class="sale-tag">Sale</div>
-                <div class="badge">+5 colors</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Corteiz</div>
-                <div class="product-title" dir="auto">חולצה 220g</div>
-                <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
-                </div>
-            </div>
-            <span class="card-arrow">↗</span>
-        </a>
-
-        <a href="#" class="product-card" data-category="luxury">
-            <div class="img-wrap">
-                <img src="BA.png" alt="Balenciaga">
-                <div class="sale-tag">Sale</div>
-                <div class="badge">+6 colors</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Balenciaga</div>
-                <div class="product-title" dir="auto">חולצה 220g</div>
-                <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -691,45 +938,9 @@
                 <div class="product-brand">Palm Angels</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
-                </div>
-            </div>
-            <span class="card-arrow">↗</span>
-        </a>
-
-        <a href="#" class="product-card" data-category="streetwear">
-            <div class="img-wrap">
-                <img src="BP.png" alt="BAPE">
-                <div class="sale-tag">Sale</div>
-                <div class="badge">+11 colors</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">BAPE</div>
-                <div class="product-title" dir="auto">חולצה 220g</div>
-                <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
-                </div>
-            </div>
-            <span class="card-arrow">↗</span>
-        </a>
-
-        <a href="#" class="product-card" data-category="streetwear">
-            <div class="img-wrap">
-                <img src="stussy.png" alt="Stussy">
-                <div class="sale-tag">Sale</div>
-                <div class="badge">+5 colors</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Stussy</div>
-                <div class="product-title" dir="auto">חולצה 220g</div>
-                <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -745,27 +956,9 @@
                 <div class="product-brand">Dior</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
-                </div>
-            </div>
-            <span class="card-arrow">↗</span>
-        </a>
-
-        <a href="#" class="product-card" data-category="luxury">
-            <div class="img-wrap">
-                <img src="CHR.png" alt="Chrome Hearts">
-                <div class="sale-tag">Sale</div>
-                <div class="badge">+3 colors</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Chrome Hearts</div>
-                <div class="product-title" dir="auto">חולצה 220g</div>
-                <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -781,9 +974,9 @@
                 <div class="product-brand">Travis Scott</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -799,9 +992,9 @@
                 <div class="product-brand">Vlone</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -817,9 +1010,189 @@
                 <div class="product-brand">Fear of God</div>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
-                    <span class="old-price">₪100</span>
-                    <span class="new-price">₪85</span>
-                    <span class="saving">−15%</span>
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="SP5.png" alt="Sp5der">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+6 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Sp5der</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="streetwear">
+            <div class="img-wrap">
+                <img src="SUP.png" alt="Supreme">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+4 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Supreme</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="OFW1.png" alt="Off-White">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+5 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Off-White</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="PLAIN.png" alt="PLAIN">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+2 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">R Culture חלק</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="DENIM.png" alt="Denim Tears">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+4 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Denim Tears</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="NBD.png" alt="New Balance">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+2 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">New Balance</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="LNV.png" alt="Lanvin">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+3 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Lanvin</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="Sport">
+            <div class="img-wrap">
+                <img src="UA.png" alt="Under Armor">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+2 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Under Armor</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="hype">
+            <div class="img-wrap">
+                <img src="NKT.png" alt="Nike">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+4 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Nike</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
+                </div>
+            </div>
+            <span class="card-arrow">↗</span>
+        </a>
+
+        <a href="#" class="product-card" data-category="luxury">
+            <div class="img-wrap">
+                <img src="VER.png" alt="Versace">
+                <div class="sale-tag">Sale</div>
+                <div class="badge">+3 colors</div>
+            </div>
+            <div class="product-info">
+                <div class="product-brand">Versace</div>
+                <div class="product-title" dir="auto">חולצה 220g</div>
+                <div class="price-row">
+                    <span class="old-price">₪115</span>
+                    <span class="new-price">₪90</span>
+                    <span class="saving">−22%</span>
                 </div>
             </div>
             <span class="card-arrow">↗</span>
@@ -868,7 +1241,7 @@
             });
         });
     });
-    
+
     // ── Nav Drawer ──
     (function() {
         var menuBtn = document.getElementById('menu-btn');
@@ -882,13 +1255,11 @@
         closeBtn.addEventListener('click', closeDrawer);
         overlay.addEventListener('click', closeDrawer);
         document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
-        // highlight current page
         var path = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.drawer-link').forEach(function(l){
             if(l.getAttribute('href')===path) l.classList.add('current');
         });
     })();
-
     </script>
 </body>
 </html>
