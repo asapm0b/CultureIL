@@ -12,12 +12,12 @@
             --black: #000;
             --white: #fff;
             --gray-dim: rgba(255,255,255,0.08);
-            --gray-border: rgba(255,255,255,0.12);
+            --gray-border: rgba(255,255,255,0.10);
             --gray-text: #666;
             --font-display: 'Bebas Neue', sans-serif;
             --font-body: 'DM Sans', sans-serif;
             --gold: #c9a84c;
-            --gold-dim: rgba(201,168,76,0.12);
+            --gold-dim: rgba(201,168,76,0.10);
         }
 
         *, *::before, *::after {
@@ -76,14 +76,13 @@
             overflow: hidden;
         }
 
-        /* soft gold radial glow */
         #accessories-bg::before {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at 15% 25%, rgba(201,168,76,0.05) 0%, transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(201,168,76,0.04) 0%, transparent 50%);
+                radial-gradient(circle at 15% 25%, rgba(201,168,76,0.04) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(201,168,76,0.03) 0%, transparent 50%);
         }
 
         .sparkle {
@@ -132,9 +131,9 @@
             position: sticky;
             top: 0;
             z-index: 500;
-            background: rgba(0,0,0,0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--gray-border);
             padding: 0 40px;
             display: flex;
@@ -175,7 +174,6 @@
             text-align: center;
         }
 
-        /* moon button in header */
         .moon-btn {
             width: 28px; height: 28px;
             border: 1px solid var(--gray-border);
@@ -192,7 +190,6 @@
             background: var(--gold-dim);
             transform: rotate(15deg);
         }
-        /* glow ring on hover */
         .moon-btn::after {
             content: '';
             position: absolute;
@@ -272,55 +269,101 @@
         .marquee-item.gold { color: var(--gold); }
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+        /* ─── SECTION LABEL ─── */
+        .section-label {
+            position: relative;
+            z-index: 2;
+            padding: 32px 40px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            animation: fadeIn 0.6s 0.15s ease both;
+        }
+        .section-label span {
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-text);
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-border);
+        }
+
         /* ─── PRODUCT GRID ─── */
         main {
             flex-grow: 1;
             position: relative;
             z-index: 2;
-            display: grid;
-            grid-template-columns: repeat(3, 220px);
-            gap: 1px;
-            background: var(--black);
-            justify-content: center;
-            padding: 50px 0 60px;
+            padding: 24px 40px 70px;
             animation: fadeIn 0.6s 0.2s ease both;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--gray-border);
+            border: 1px solid var(--gray-border);
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ─── PRODUCT CARD ─── */
         .product-card {
-            background: var(--black);
+            background: #040404;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            transition: background 0.25s ease;
-            border: 1px solid var(--gray-border);
+            transition: background 0.3s ease;
         }
-        .product-card:hover { background: #070707; }
+        .product-card:hover { background: #080808; }
+
+        /* stagger fade-in */
+        .product-card:nth-child(1)  { animation: cardIn 0.5s 0.05s ease both; }
+        .product-card:nth-child(2)  { animation: cardIn 0.5s 0.10s ease both; }
+        .product-card:nth-child(3)  { animation: cardIn 0.5s 0.15s ease both; }
+        .product-card:nth-child(4)  { animation: cardIn 0.5s 0.20s ease both; }
+        .product-card:nth-child(5)  { animation: cardIn 0.5s 0.25s ease both; }
+        .product-card:nth-child(6)  { animation: cardIn 0.5s 0.30s ease both; }
+        .product-card:nth-child(7)  { animation: cardIn 0.5s 0.35s ease both; }
+        .product-card:nth-child(8)  { animation: cardIn 0.5s 0.40s ease both; }
+        .product-card:nth-child(9)  { animation: cardIn 0.5s 0.45s ease both; }
+        .product-card:nth-child(10) { animation: cardIn 0.5s 0.50s ease both; }
+        .product-card:nth-child(11) { animation: cardIn 0.5s 0.55s ease both; }
+        .product-card:nth-child(12) { animation: cardIn 0.5s 0.60s ease both; }
+        .product-card:nth-child(13) { animation: cardIn 0.5s 0.65s ease both; }
+        .product-card:nth-child(14) { animation: cardIn 0.5s 0.70s ease both; }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
         .img-wrap {
             position: relative;
             width: 100%;
             aspect-ratio: 1;
             overflow: hidden;
-            background: #080808;
+            background: #060606;
         }
         .img-wrap img {
             width: 100%; height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
         }
-        .product-card:hover .img-wrap img { transform: scale(1.07); }
+        .product-card:hover .img-wrap img { transform: scale(1.06); }
 
-        /* gold shimmer overlay on hover */
+        /* gold shimmer on hover */
         .img-wrap::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(201,168,76,0) 0%, rgba(201,168,76,0.06) 100%);
+            background: linear-gradient(135deg, rgba(201,168,76,0) 0%, rgba(201,168,76,0.07) 100%);
             opacity: 0;
             z-index: 1;
             transition: opacity 0.4s ease;
@@ -328,22 +371,13 @@
         }
         .product-card:hover .img-wrap::before { opacity: 1; }
 
-        .img-wrap::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
-            pointer-events: none;
-            z-index: 2;
-        }
-
         /* CATEGORY TAG */
         .cat-tag {
             position: absolute;
             top: 10px; left: 10px;
-            background: rgba(0,0,0,0.75);
-            border: 1px solid var(--gray-border);
-            color: var(--gray-text);
+            background: rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #555;
             font-size: 8px;
             font-weight: 500;
             letter-spacing: 1.5px;
@@ -351,57 +385,112 @@
             padding: 3px 8px;
             backdrop-filter: blur(8px);
             z-index: 3;
+            transition: color 0.2s, border-color 0.2s;
         }
+        .product-card:hover .cat-tag { color: var(--gray-text); border-color: rgba(255,255,255,0.15); }
 
         /* INFO */
         .product-info {
-            padding: 14px 16px 16px;
+            padding: 14px 16px 18px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            border-top: 1px solid var(--gray-border);
+            gap: 5px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            flex: 1;
         }
 
         .product-brand {
-            font-size: 9px;
-            letter-spacing: 2px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
-            color: var(--gray-text);
+            color: #444;
+            transition: color 0.2s;
         }
+        .product-card:hover .product-brand { color: var(--gray-text); }
 
         .product-title {
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 400;
-            line-height: 1.4;
+            line-height: 1.45;
+            color: rgba(255,255,255,0.85);
         }
 
         .price-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .new-price {
             font-family: var(--font-display);
-            font-size: 20px;
+            font-size: 19px;
             letter-spacing: 1px;
+            color: var(--white);
         }
 
-        /* gold accent on price */
         .price-gold { color: var(--gold); }
 
-        /* hover arrow */
+        /* top-right arrow */
         .card-arrow {
             position: absolute;
-            bottom: 16px; right: 16px;
-            font-size: 16px;
+            top: 13px; right: 14px;
+            font-size: 13px;
             color: var(--gray-text);
             opacity: 0;
-            transform: translate(-4px, 4px);
+            transform: translate(-3px, 3px);
             transition: opacity 0.25s, transform 0.25s, color 0.25s;
+            z-index: 4;
         }
         .product-card:hover .card-arrow { opacity: 1; transform: translate(0,0); color: var(--white); }
+
+        /* ─── EMPTY / COMING SOON CARD ─── */
+        .product-card.empty {
+            cursor: default;
+            pointer-events: none;
+        }
+        .product-card.empty .img-wrap {
+            background: #050505;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .empty-icon {
+            font-size: 22px;
+            opacity: 0.12;
+            user-select: none;
+        }
+        .product-card.empty .product-info {
+            border-top-color: rgba(255,255,255,0.04);
+        }
+        .product-card.empty .product-brand {
+            color: #2a2a2a;
+        }
+        .product-card.empty .product-title {
+            color: #2a2a2a;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .coming-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .coming-badge span {
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #282828;
+        }
+        .coming-badge::before {
+            content: '';
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            flex-shrink: 0;
+        }
 
         /* ─── MODAL ─── */
         .modal-overlay {
@@ -423,7 +512,7 @@
         }
 
         .modal-box {
-            background: #0a0a0a;
+            background: #080808;
             border: 1px solid var(--gray-border);
             padding: 48px 40px 40px;
             max-width: 380px;
@@ -482,7 +571,6 @@
             font-size: 26px;
             letter-spacing: 5px;
             user-select: all;
-            position: relative;
             transition: background 0.2s;
         }
         .discount-code:hover { background: var(--gold-dim); }
@@ -531,23 +619,26 @@
         .back-top:hover { color: var(--white); }
 
         /* ─── RESPONSIVE ─── */
-        @media (max-width: 900px) {
-            main { grid-template-columns: repeat(2, 200px); }
+        @media (max-width: 1100px) {
+            .grid { grid-template-columns: repeat(3, 1fr); }
         }
         @media (max-width: 768px) {
             header { padding: 0 20px; }
             .page-header { padding: 20px 20px 16px; }
-            main { grid-template-columns: repeat(2, 160px); padding: 30px 0 40px; }
+            main { padding: 20px 20px 50px; }
+            .section-label { padding: 24px 20px 0; }
+            .grid { grid-template-columns: repeat(2, 1fr); }
             footer { padding: 16px 20px; }
         }
         @media (max-width: 480px) {
-            main { grid-template-columns: repeat(2, 140px); }
+            .grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (hover: none) {
             body { cursor: auto; }
             .cursor { display: none; }
             .moon-btn, .modal-close, .back-top { cursor: pointer; }
+            .product-card.empty { pointer-events: none; }
         }
 
         /* ─── MOBILE DRAWER ─── */
@@ -573,21 +664,6 @@
         .drawer-foot-brand { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); }
         .drawer-ig { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid var(--gray-border); border-radius: 50%; transition: all .2s; }
         .drawer-ig:hover { border-color: var(--white); background: var(--white); color: var(--black); }
-        /* page name strip */
-        .page-name-strip { display: flex; align-items: center; gap: 8px; padding: 8px 40px; border-bottom: 1px solid var(--gray-border); background: rgba(255,255,255,.015); }
-        .page-name-strip a { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); transition: color .2s; }
-        .page-name-strip a:hover { color: var(--white); }
-        .page-name-strip .sep { color: var(--gray-text); font-size: 9px; }
-        .page-name-strip .current-page { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--white); }
-        @media (max-width: 767px) {
-            .page-name-strip { padding: 8px 16px; }
-            header { padding: 0 12px !important; }
-            .header-left > *:not(.menu-btn) { display: none; }
-            .header-right > *:not(.inventory-pill):not(.live-pill) { display: none; }
-        }
-
-
-        /* ─── MOBILE HEADER FIX ─── */
         @media (max-width: 767px) {
             header { padding: 0 12px !important; height: 50px !important; }
             .header-left > *:not(.menu-btn) { display: none !important; }
@@ -617,7 +693,6 @@
         </div>
     </div>
 
-
     <!-- NAV DRAWER -->
     <div class="nav-overlay" id="nav-overlay"></div>
     <nav class="nav-drawer" id="nav-drawer">
@@ -630,7 +705,7 @@
         <a href="shoes.html" class="drawer-link">Sneakers <span class="arr">↗</span></a>
         <a href="T.html" class="drawer-link">T-Shirts <span class="arr">↗</span></a>
         <a href="TR.html" class="drawer-link">Tracksuits <span class="arr">↗</span></a>
-        <a href="ACS.html" class="drawer-link">Accessories <span class="arr">↗</span></a>
+        <a href="ACS.html" class="drawer-link current">Accessories <span class="arr">↗</span></a>
         <div class="drawer-section">Info</div>
         <a href="SH.html" class="drawer-link">Shipping <span class="arr">↗</span></a>
         <a href="A.html" class="drawer-link">About <span class="arr">↗</span></a>
@@ -652,7 +727,8 @@
         </div>
         <div class="header-brand">R CULTURE IL</div>
         <div class="header-right">
-            <a href="SH.html" class="h-nav-link">Shipping</a><button class="moon-btn" id="promo-moon" title="Click for a surprise">🌙</button>
+            <a href="SH.html" class="h-nav-link">Shipping</a>
+            <button class="moon-btn" id="promo-moon" title="Click for a surprise">🌙</button>
         </div>
     </header>
 
@@ -660,7 +736,7 @@
     <div class="page-header">
         <div class="page-title">Accessories</div>
         <div class="page-meta">
-            <div class="page-meta-top">6 pieces available</div>
+            <div class="page-meta-top">14 pieces available</div>
             <div class="page-meta-sub" dir="auto">שעונים · צמידים · שרשראות · פאוצ'ים</div>
         </div>
     </div>
@@ -687,99 +763,198 @@
         </div>
     </div>
 
+    <!-- SECTION LABEL -->
+    <div class="section-label">
+        <span>Current Collection</span>
+    </div>
+
     <!-- GRID -->
     <main>
+        <div class="grid">
 
-        <a href="#" class="product-card">
-            <div class="img-wrap">
-                <img src="LACO.png" alt="Lacoste Bracelet">
-                <div class="cat-tag">Bracelet</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Lacoste</div>
-                <div class="product-title" dir="auto">צמיד לאכוסט</div>
-                <div class="price-row">
-                    <span class="new-price">₪210</span>
+            <!-- ── EXISTING 6 PRODUCTS ── -->
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="LACO.png" alt="Lacoste Bracelet">
+                    <div class="cat-tag">Bracelet</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Lacoste</div>
+                    <div class="product-title" dir="auto">צמיד לאכוסט</div>
+                    <div class="price-row">
+                        <span class="new-price">₪210</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="CART.png" alt="Cartier Santos">
+                    <div class="cat-tag">Watch</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Cartier</div>
+                    <div class="product-title" dir="auto">Santos Medium</div>
+                    <div class="price-row">
+                        <span class="new-price price-gold">₪370</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="seiko.png" alt="Seiko 5 Sports GMT">
+                    <div class="cat-tag">Watch</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Seiko</div>
+                    <div class="product-title" dir="auto">5 Sports GMT</div>
+                    <div class="price-row">
+                        <span class="new-price price-gold">₪370</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="GOYA.png" alt="Goyard Pouch">
+                    <div class="cat-tag">Pouch</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Goyard</div>
+                    <div class="product-title" dir="auto">Goyard Pouch</div>
+                    <div class="price-row">
+                        <span class="new-price">₪190</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="LVW.png" alt="LV Wallet">
+                    <div class="cat-tag">Wallet</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Louis Vuitton</div>
+                    <div class="product-title" dir="auto">LV Wallet</div>
+                    <div class="price-row">
+                        <span class="new-price price-gold">₪130</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <a href="#" class="product-card">
+                <div class="img-wrap">
+                    <img src="LV.png" alt="LV Bracelet">
+                    <div class="cat-tag">Bracelet</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Louis Vuitton</div>
+                    <div class="product-title" dir="auto">LV Bracelet</div>
+                    <div class="price-row">
+                        <span class="new-price price-gold">₪150</span>
+                    </div>
+                </div>
+                <span class="card-arrow">↗</span>
+            </a>
+
+            <!-- ── 8 NEW EMPTY SLOTS ── -->
+
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
                 </div>
             </div>
-            <span class="card-arrow">↗</span>
-        </a>
 
-        <a href="#" class="product-card">
-            <div class="img-wrap">
-                <img src="CART.png" alt="Cartier Santos">
-                <div class="cat-tag">Watch</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Cartier</div>
-                <div class="product-title" dir="auto">Santos Medium</div>
-                <div class="price-row">
-                    <span class="new-price price-gold">₪370</span>
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
                 </div>
             </div>
-            <span class="card-arrow">↗</span>
-        </a>
 
-        <a href="#" class="product-card">
-            <div class="img-wrap">
-                <img src="seiko.png" alt="Seiko 5 Sports GMT">
-                <div class="cat-tag">Watch</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Seiko</div>
-                <div class="product-title" dir="auto">5 Sports GMT</div>
-                <div class="price-row">
-                    <span class="new-price price-gold">₪370</span>
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
                 </div>
             </div>
-            <span class="card-arrow">↗</span>
-        </a>
 
-        <a href="#" class="product-card">
-            <div class="img-wrap">
-                <img src="GOYA.png" alt="Goyard Pouch">
-                <div class="cat-tag">Pouch</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Goyard</div>
-                <div class="product-title" dir="auto">Goyard Pouch</div>
-                <div class="price-row">
-                    <span class="new-price">₪190</span>
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
                 </div>
             </div>
-            <span class="card-arrow">↗</span>
-        </a>
 
-        <a href="#" class="product-card">
-            <div class="img-wrap">
-                <img src="LVW.png" alt="LV Wallet">
-                <div class="cat-tag">Wallet</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Louis Vuitton</div>
-                <div class="product-title" dir="auto">LV Wallet</div>
-                <div class="price-row">
-                    <span class="new-price price-gold">₪130</span>
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
                 </div>
             </div>
-            <span class="card-arrow">↗</span>
-        </a>
 
-        <a href="#" class="product-card">
-            <div class="img-wrap">
-                <img src="LV.png" alt="LV Bracelet">
-                <div class="cat-tag">Bracelet</div>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">Louis Vuitton</div>
-                <div class="product-title" dir="auto">LV Bracelet</div>
-                <div class="price-row">
-                    <span class="new-price price-gold">₪150</span>
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
                 </div>
             </div>
-            <span class="card-arrow">↗</span>
-        </a>
 
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
+                </div>
+            </div>
+
+            <div class="product-card empty">
+                <div class="img-wrap">
+                    <div class="empty-icon">◈</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Drop</div>
+                    <div class="product-title">Coming Soon</div>
+                    <div class="coming-badge"><span>Dropping Soon</span></div>
+                </div>
+            </div>
+
+        </div><!-- end .grid -->
     </main>
 
     <!-- FOOTER -->
@@ -814,7 +989,7 @@
         cursor.style.left = e.clientX + 'px';
         cursor.style.top  = e.clientY + 'px';
     });
-    document.querySelectorAll('a, button, .product-card').forEach(el => {
+    document.querySelectorAll('a, button, .product-card:not(.empty)').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
     });
@@ -843,27 +1018,21 @@
     closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('active'); });
-    
+
     // ── Nav Drawer ──
     (function() {
-        var menuBtn = document.getElementById('menu-btn');
-        var drawer  = document.getElementById('nav-drawer');
-        var overlay = document.getElementById('nav-overlay');
-        var closeBtn = document.getElementById('drawer-close');
+        var menuBtn  = document.getElementById('menu-btn');
+        var drawer   = document.getElementById('nav-drawer');
+        var overlay  = document.getElementById('nav-overlay');
+        var closeBt  = document.getElementById('drawer-close');
         if (!menuBtn) return;
         function openDrawer()  { drawer.classList.add('active'); overlay.classList.add('active'); menuBtn.classList.add('open'); document.body.style.overflow='hidden'; }
         function closeDrawer() { drawer.classList.remove('active'); overlay.classList.remove('active'); menuBtn.classList.remove('open'); document.body.style.overflow=''; }
         menuBtn.addEventListener('click', openDrawer);
-        closeBtn.addEventListener('click', closeDrawer);
+        closeBt.addEventListener('click', closeDrawer);
         overlay.addEventListener('click', closeDrawer);
         document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
-        // highlight current page
-        var path = window.location.pathname.split('/').pop() || 'index.html';
-        document.querySelectorAll('.drawer-link').forEach(function(l){
-            if(l.getAttribute('href')===path) l.classList.add('current');
-        });
     })();
-
     </script>
 </body>
 </html>
