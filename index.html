@@ -37,6 +37,10 @@
         .menu-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
         .menu-btn.open span:nth-child(2) { opacity: 0; }
         .menu-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .account-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); color: #fff; padding: 6px 12px 6px 9px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; cursor: none; transition: border-color .2s, background .2s, color .2s; white-space: nowrap; }
+        .account-btn svg { display: block; flex-shrink: 0; }
+        .account-btn:hover { border-color: #fff; background: #fff; color: #000; }
+        .account-btn .acc-label { line-height: 1; }
         .live-pill { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.06); border: 1px solid var(--border); border-radius: 20px; padding: 3px 8px; font-size: 9px; letter-spacing: 1px; }
         .live-dot { width: 5px; height: 5px; background: #3dff3d; border-radius: 50%; box-shadow: 0 0 5px #3dff3d; animation: blink 2s ease-in-out infinite; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
@@ -108,7 +112,8 @@
         .no-results { padding: 32px 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #333; text-align: center; }
         @media (min-width: 640px) { .grid-section { grid-template-columns: repeat(4,1fr); gap: 14px; padding: 28px; } .cat-card { aspect-ratio: 2/3; } }
         @media (min-width: 1024px) { .grid-section { padding: 40px; gap: 18px; } .cat-label { font-size: 26px; } }
-        @media (hover: none) { body { cursor: auto; } .cursor { display: none; } .menu-btn, .drawer-close, .back-top, .search-close { cursor: pointer; } }
+        @media (max-width: 480px) { .account-btn .acc-label { display: none; } .account-btn { padding: 6px; } }
+        @media (hover: none) { body { cursor: auto; } .cursor { display: none; } .menu-btn, .drawer-close, .back-top, .search-close, .account-btn { cursor: pointer; } }
     </style>
 </head>
 <body>
@@ -126,6 +131,8 @@
         <a href="T.html" class="drawer-link">חולצות<span>↗</span></a>
         <a href="TR.html" class="drawer-link">שורטים <span>↗</span></a>
         <a href="ACS.html" class="drawer-link">אקססוריז<span>↗</span></a>
+        <div class="drawer-section-label">Account</div>
+        <a href="login.html" class="drawer-link">Login / Sign Up <span>↗</span></a>
         <div class="drawer-section-label">Info</div>
         <a href="SH.html" class="drawer-link">Shipping <span>↗</span></a>
         <a href="A.html" class="drawer-link">About <span>↗</span></a>
@@ -158,6 +165,13 @@
     <header>
         <div class="h-left">
             <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+            <a href="login.html" class="account-btn" title="Login / Sign Up">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
+                </svg>
+                <span class="acc-label">Login / Sign Up</span>
+            </a>
         </div>
         <div class="h-brand">R CULTURE IL</div>
         <div class="h-right">
