@@ -41,6 +41,11 @@
         .account-btn svg { display: block; flex-shrink: 0; }
         .account-btn:hover { border-color: #fff; background: #fff; color: #000; }
         .account-btn .acc-label { line-height: 1; }
+        /* logged-in avatar variant */
+        .account-btn.logged-in { padding: 0; border: none; gap: 0; }
+        .acc-avatar { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: 13px; letter-spacing: 1px; color: #fff; background: rgba(255,255,255,.06); transition: border-color .2s, background .2s, color .2s; }
+        .account-btn.logged-in:hover { background: none; color: #fff; }
+        .account-btn.logged-in:hover .acc-avatar { border-color: #fff; background: #fff; color: #000; }
         .live-pill { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.06); border: 1px solid var(--border); border-radius: 20px; padding: 3px 8px; font-size: 9px; letter-spacing: 1px; }
         .live-dot { width: 5px; height: 5px; background: #3dff3d; border-radius: 50%; box-shadow: 0 0 5px #3dff3d; animation: blink 2s ease-in-out infinite; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
@@ -58,6 +63,13 @@
         .drawer-link { display: flex; align-items: center; justify-content: space-between; padding: 13px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); border-bottom: 1px solid rgba(255,255,255,.04); transition: color .2s, padding-left .2s; }
         .drawer-link:hover, .drawer-link.active { color: #fff; padding-left: 30px; }
         .drawer-link span { font-size: 14px; }
+        .drawer-user { padding: 4px 24px 12px; display: none; }
+        .drawer-user.show { display: block; }
+        .drawer-user .du-name { font-size: 13px; color: #fff; font-weight: 400; }
+        .drawer-user .du-email { font-size: 9px; letter-spacing: .5px; color: var(--dim); margin-top: 3px; }
+        .drawer-logout { width: calc(100% - 48px); margin: 10px 24px 0; background: none; border: 1px solid var(--border); color: var(--dim); font-family: var(--font-b); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 9px 0; cursor: none; transition: border-color .2s, color .2s; display: none; }
+        .drawer-logout.show { display: block; }
+        .drawer-logout:hover { border-color: #fff; color: #fff; }
         .drawer-footer { margin-top: auto; padding: 20px 24px 0; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
         .drawer-ig { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 50%; transition: all .2s; }
         .drawer-ig:hover { border-color: #fff; background: #fff; color: #000; }
@@ -112,8 +124,8 @@
         .no-results { padding: 32px 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #333; text-align: center; }
         @media (min-width: 640px) { .grid-section { grid-template-columns: repeat(4,1fr); gap: 14px; padding: 28px; } .cat-card { aspect-ratio: 2/3; } }
         @media (min-width: 1024px) { .grid-section { padding: 40px; gap: 18px; } .cat-label { font-size: 26px; } }
-        @media (max-width: 480px) { .account-btn .acc-label { display: none; } .account-btn { padding: 6px; } }
-        @media (hover: none) { body { cursor: auto; } .cursor { display: none; } .menu-btn, .drawer-close, .back-top, .search-close, .account-btn { cursor: pointer; } }
+        @media (max-width: 480px) { .account-btn .acc-label { display: none; } .account-btn:not(.logged-in) { padding: 6px; } }
+        @media (hover: none) { body { cursor: auto; } .cursor { display: none; } .menu-btn, .drawer-close, .back-top, .search-close, .account-btn, .drawer-logout { cursor: pointer; } }
     </style>
 </head>
 <body>
@@ -132,7 +144,12 @@
         <a href="TR.html" class="drawer-link">שורטים <span>↗</span></a>
         <a href="ACS.html" class="drawer-link">אקססוריז<span>↗</span></a>
         <div class="drawer-section-label">Account</div>
-        <a href="log.html" class="drawer-link">Login / Sign Up <span>↗</span></a>
+        <div class="drawer-user" id="drawer-user">
+            <div class="du-name" id="du-name"></div>
+            <div class="du-email" id="du-email"></div>
+        </div>
+        <a href="log.html" class="drawer-link" id="drawer-login-link">Login / Sign Up <span>↗</span></a>
+        <button class="drawer-logout" id="drawer-logout">Log Out</button>
         <div class="drawer-section-label">Info</div>
         <a href="SH.html" class="drawer-link">Shipping <span>↗</span></a>
         <a href="A.html" class="drawer-link">About <span>↗</span></a>
@@ -165,12 +182,12 @@
     <header>
         <div class="h-left">
             <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
-            <a href="log.html" class="account-btn" title="Login / Sign Up">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <a href="log.html" class="account-btn" id="account-btn" title="Login / Sign Up">
+                <svg id="acc-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
                 </svg>
-                <span class="acc-label">Login / Sign Up</span>
+                <span class="acc-label" id="acc-label">Login / Sign Up</span>
             </a>
         </div>
         <div class="h-brand">R CULTURE IL</div>
@@ -241,13 +258,24 @@
         <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Top ↑</button>
     </footer>
 
+    <!-- Supabase JS v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+    /* ===== Supabase ===== */
+    const SUPABASE_URL = "https://syjaeymotxjgxnweciho.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_pqCkUYqUYc6c50qUvRKQTw_FAjY2hI-";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', e => { cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px'; });
-    document.querySelectorAll('a,button,.cat-card').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-    });
+    function bindHover(){
+        document.querySelectorAll('a,button,.cat-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+    }
+    bindHover();
+
     const invEl = document.getElementById('live-inv');
     setInterval(() => {
         let n = parseInt(invEl.innerText);
@@ -255,6 +283,7 @@
         n = Math.min(Math.max(n+d,870),910); invEl.innerText = n;
         invEl.classList.remove('animating'); void invEl.offsetWidth; invEl.classList.add('animating');
     }, 3500);
+
     const menuBtn = document.getElementById('menu-btn');
     const drawer = document.getElementById('nav-drawer');
     const overlay = document.getElementById('nav-overlay');
@@ -264,6 +293,62 @@
     menuBtn.addEventListener('click', openDrawer);
     closeBtn.addEventListener('click', closeDrawer);
     overlay.addEventListener('click', closeDrawer);
+
+    /* ===== Auth-aware header ===== */
+    const accountBtn = document.getElementById('account-btn');
+    const accIcon = document.getElementById('acc-icon');
+    const accLabel = document.getElementById('acc-label');
+    const drawerUser = document.getElementById('drawer-user');
+    const duName = document.getElementById('du-name');
+    const duEmail = document.getElementById('du-email');
+    const drawerLoginLink = document.getElementById('drawer-login-link');
+    const drawerLogout = document.getElementById('drawer-logout');
+
+    function initials(first, last, email){
+        let a = (first||'').trim(), b = (last||'').trim();
+        if (a || b) return ((a[0]||'') + (b[0]||'')).toUpperCase();
+        // fall back to first two letters of the email name
+        const n = (email||'').split('@')[0].replace(/[^a-zA-Z]/g,'');
+        return (n.slice(0,2) || 'ME').toUpperCase();
+    }
+
+    function showLoggedIn(user){
+        const meta = user.user_metadata || {};
+        const fullName = [meta.first_name, meta.last_name].filter(Boolean).join(' ') || (user.email||'').split('@')[0];
+        const ini = initials(meta.first_name, meta.last_name, user.email);
+
+        // header: swap icon+label for an initials avatar
+        accountBtn.classList.add('logged-in');
+        accountBtn.title = fullName;
+        accIcon.style.display = 'none';
+        accLabel.style.display = 'none';
+        if (!accountBtn.querySelector('.acc-avatar')) {
+            const av = document.createElement('span');
+            av.className = 'acc-avatar';
+            av.textContent = ini;
+            accountBtn.appendChild(av);
+        }
+
+        // drawer: show name/email + logout, hide the login link
+        duName.textContent = fullName;
+        duEmail.textContent = user.email || '';
+        drawerUser.classList.add('show');
+        drawerLogout.classList.add('show');
+        drawerLoginLink.style.display = 'none';
+        bindHover();
+    }
+
+    drawerLogout.addEventListener('click', async () => {
+        await sb.auth.signOut();
+        location.reload();
+    });
+
+    (async () => {
+        const { data } = await sb.auth.getSession();
+        if (data.session && data.session.user) showLoggedIn(data.session.user);
+    })();
+
+    /* ===== Search ===== */
     const searchOverlay = document.getElementById('search-overlay');
     const searchTrigger = document.getElementById('search-trigger');
     const searchClose = document.getElementById('search-close');
