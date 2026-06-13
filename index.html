@@ -126,6 +126,30 @@
         @media (min-width: 1024px) { .grid-section { padding: 40px; gap: 18px; } .cat-label { font-size: 26px; } }
         @media (max-width: 480px) { .account-btn .acc-label { display: none; } .account-btn:not(.logged-in) { padding: 6px; } }
         @media (hover: none) { body { cursor: auto; } .cursor { display: none; } .menu-btn, .drawer-close, .back-top, .search-close, .account-btn, .drawer-logout { cursor: pointer; } }
+        /* ===== TikTok promo popup ===== */
+        .promo-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s ease; }
+        .promo-overlay.show { opacity: 1; visibility: visible; }
+        .promo-box { position: relative; width: 100%; max-width: 340px; background: #050505; border: 1px solid var(--border); padding: 34px 28px 30px; text-align: center; transform: translateY(16px) scale(.98); transition: transform .4s cubic-bezier(.16,1,.3,1); }
+        .promo-overlay.show .promo-box { transform: translateY(0) scale(1); }
+        .promo-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--dim); font-size: 22px; line-height: 1; cursor: none; transition: color .2s; }
+        .promo-close:hover { color: #fff; }
+        .promo-tt-icon { width: 46px; height: 46px; margin: 0 auto 18px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .promo-title { font-family: var(--font-d); font-size: 26px; letter-spacing: 2px; line-height: 1.1; margin-bottom: 8px; }
+        .promo-text { font-size: 12px; line-height: 1.6; color: var(--dim); margin-bottom: 22px; }
+        .promo-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: #fff; color: #000; border: none; font-family: var(--font-b); font-weight: 500; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 0; cursor: none; position: relative; overflow: hidden; transition: color .3s; }
+        .promo-btn span { position: relative; z-index: 1; }
+        .promo-btn::before { content: ''; position: absolute; inset: 0; background: #000; transform: translateY(101%); transition: transform .35s cubic-bezier(.7,0,.3,1); z-index: 0; }
+        .promo-btn:hover { color: #fff; border: 1px solid #fff; }
+        .promo-btn:hover::before { transform: translateY(0); }
+        .promo-reveal { display: none; }
+        .promo-reveal.show { display: block; animation: heroIn .5s ease both; }
+        .promo-coupon-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+        .promo-coupon { display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px dashed rgba(255,255,255,.35); padding: 14px 0; margin-bottom: 8px; }
+        .promo-coupon-code { font-family: var(--font-d); font-size: 30px; letter-spacing: 6px; color: #fff; }
+        .promo-copy { background: none; border: none; color: var(--dim); font-family: var(--font-b); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; cursor: none; transition: color .2s; }
+        .promo-copy:hover { color: #fff; }
+        @media (hover: none) { .promo-close, .promo-btn, .promo-copy { cursor: pointer; } }
+
     </style>
 </head>
 <body>
@@ -170,6 +194,30 @@
             <input type="text" id="search-input" placeholder="Nike, Jordan, Corteiz..." autocomplete="off" spellcheck="false">
         </div>
         <div class="search-results" id="search-results"></div>
+    </div>
+
+    <!-- ===== TikTok promo popup ===== -->
+    <div class="promo-overlay" id="promo-overlay">
+        <div class="promo-box">
+            <button class="promo-close" id="promo-close">×</button>
+            <div class="promo-tt-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M16.6 5.82a4.28 4.28 0 0 1-1.06-2.82h-3.2v12.9a2.34 2.34 0 0 1-2.34 2.26 2.34 2.34 0 0 1-2.18-3.2 2.34 2.34 0 0 1 3.02-1.32V10.4a5.54 5.54 0 0 0-6.62 5.44A5.54 5.54 0 0 0 12.34 21a5.54 5.54 0 0 0 5.46-5.54V9.01a7.5 7.5 0 0 0 4.2 1.28V7.1a4.28 4.28 0 0 1-3.4-1.28z"/></svg>
+            </div>
+
+            <div class="promo-stage" id="promo-stage">
+                <div class="promo-title">FOLLOW US</div>
+                <div class="promo-text" dir="rtl">תעקבו אחרינו בטיקטוק להנחות בכל האתר</div>
+                <a href="https://www.tiktok.com/@rcultureil" target="_blank" rel="noopener" class="promo-btn" id="promo-follow">
+                    <span>Follow on TikTok</span>
+                </a>
+            </div>
+
+            <div class="promo-reveal" id="promo-reveal">
+                <div class="promo-coupon-label" dir="rtl">קוד הקופון שלך</div>
+                <div class="promo-coupon"><span class="promo-coupon-code">2027</span></div>
+                <button class="promo-copy" id="promo-copy">Tap to copy</button>
+            </div>
+        </div>
     </div>
 
     <div class="ticker">
@@ -378,6 +426,55 @@
         }
     });
     document.addEventListener('keydown', e => { if(e.key==='Escape'){searchOverlay.classList.remove('active'); closeDrawer();} });
+
+    /* ===== TikTok promo popup ===== */
+    (function(){
+        var overlay = document.getElementById('promo-overlay');
+        var closeB  = document.getElementById('promo-close');
+        var followB = document.getElementById('promo-follow');
+        var stage   = document.getElementById('promo-stage');
+        var reveal  = document.getElementById('promo-reveal');
+        var copyB   = document.getElementById('promo-copy');
+        if(!overlay) return;
+
+        // show once per browser, 15s after load
+        var SEEN = 'rc_promo_seen';
+        function open(){ overlay.classList.add('show'); cursor && cursor.classList.remove('hovering'); }
+        function close(){ overlay.classList.remove('show'); }
+
+        var alreadySeen = false;
+        try { alreadySeen = sessionStorage.getItem(SEEN) === '1'; } catch(e){}
+        if(!alreadySeen){
+            setTimeout(open, 15000);
+            try { sessionStorage.setItem(SEEN, '1'); } catch(e){}
+        }
+
+        closeB.addEventListener('click', close);
+        overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+
+        // clicking follow opens TikTok in a new tab AND reveals the coupon
+        followB.addEventListener('click', function(){
+            stage.style.display = 'none';
+            reveal.classList.add('show');
+        });
+
+        copyB.addEventListener('click', function(){
+            var code = '2027';
+            if(navigator.clipboard && navigator.clipboard.writeText){
+                navigator.clipboard.writeText(code).then(function(){ copyB.textContent = 'Copied ✓'; });
+            } else {
+                copyB.textContent = 'Code: ' + code;
+            }
+        });
+
+        // hover-cursor binding for the new buttons
+        [closeB, followB, copyB].forEach(function(el){
+            el.addEventListener('mouseenter', function(){ cursor && cursor.classList.add('hovering'); });
+            el.addEventListener('mouseleave', function(){ cursor && cursor.classList.remove('hovering'); });
+        });
+    })();
+
     </script>
 </body>
 </html>
