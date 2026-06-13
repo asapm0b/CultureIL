@@ -324,7 +324,7 @@
         e.preventDefault();
         const email=document.getElementById('email').value.trim();
         if(!email){setMsg('Enter your email above first, then tap Forgot.','error');return;}
-        const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/login.html'});
+        const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href.split('?')[0].split('#')[0]});
         setMsg(error?error.message:'Password reset link sent — check your email.',error?'error':'ok');
     });
 
@@ -332,7 +332,7 @@
     document.getElementById('google-btn').addEventListener('click',async()=>{
         const {error}=await sb.auth.signInWithOAuth({
             provider:'google',
-            options:{redirectTo:window.location.origin+'/index.html'}
+            options:{redirectTo:new URL('index.html',window.location.href).href}
         });
         if(error)setMsg(error.message,'error');
     });
