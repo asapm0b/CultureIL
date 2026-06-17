@@ -144,6 +144,34 @@
             text-align: center;
         }
 
+        .h-cart-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-text);
+            transition: color 0.2s;
+        }
+        .h-cart-btn:hover { color: var(--white); }
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -9px;
+            background: var(--white);
+            color: var(--black);
+            font-family: var(--font-body);
+            font-size: 8px;
+            font-weight: 700;
+            line-height: 1;
+            min-width: 14px;
+            height: 14px;
+            border-radius: 7px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0 3px;
+        }
+
         /* ─── PAGE TITLE STRIP ─── */
         .page-header {
             border-bottom: 1px solid var(--gray-border);
@@ -312,6 +340,49 @@
             letter-spacing: 0.3px;
             margin-top: 4px;
         }
+
+        /* ─── ADD TO CART ─── */
+        .add-cart-btn {
+            align-self: center;
+            background: none;
+            border: 1px solid var(--gray-border);
+            color: var(--gray-text);
+            font-family: var(--font-body);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            margin-top: 1px;
+            cursor: none;
+            transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .add-cart-btn:hover { border-color: var(--white); color: var(--white); }
+        .add-cart-btn:active { background: var(--white); color: var(--black); border-color: var(--white); }
+
+        /* ─── CART TOAST ─── */
+        .cart-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translate(-50%, 14px);
+            background: var(--white);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 13px 20px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 9000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .cart-toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .cart-toast svg { flex-shrink: 0; }
 
         /* ─── CAROUSEL STATES ─── */
         .shoe-item.active {
@@ -549,7 +620,7 @@
         @media (hover: none) {
             body { cursor: auto; }
             .cursor { display: none; }
-            .nav-arrow, .back-top { cursor: pointer; }
+            .nav-arrow, .back-top, .add-cart-btn, .h-cart-btn { cursor: pointer; }
             .overlay { cursor: pointer; }
         }
 
@@ -597,12 +668,21 @@
             .header-right .h-nav-link { display: none !important; }
             .header-brand { font-size: 18px !important; }
         }
+        @media (max-width: 767px) {
+            .header-right .h-cart-btn { display: flex !important; }
+        }
     </style>
 </head>
 <body>
 
     <div class="cursor" id="cursor"></div>
     <div class="overlay" id="overlay"></div>
+
+    <!-- CART TOAST -->
+    <div class="cart-toast" id="cart-toast">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>Added to Cart</span>
+    </div>
 
     <!-- TICKER -->
     <div class="ticker">
@@ -634,6 +714,7 @@
         <a href="T.html" class="drawer-link">T-Shirts <span class="arr">↗</span></a>
         <a href="TR.html" class="drawer-link">Tracksuits <span class="arr">↗</span></a>
         <a href="ACS.html" class="drawer-link">Accessories <span class="arr">↗</span></a>
+        <a href="cart.html" class="drawer-link">Cart <span class="arr">↗</span></a>
         <div class="drawer-section">Info</div>
         <a href="SH.html" class="drawer-link">Shipping <span class="arr">↗</span></a>
         <a href="A.html" class="drawer-link">About <span class="arr">↗</span></a>
@@ -656,6 +737,10 @@
         <div class="header-brand">R CULTURE IL</div>
         <div class="header-right">
             <a href="SH.html" class="h-nav-link">Shipping</a><a href="A.html" class="h-nav-link">About</a>
+            <a href="cart.html" class="h-cart-btn" title="Cart">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 13H7.2L6 7z"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg>
+                <span class="cart-badge" id="cart-badge">0</span>
+            </a>
         </div>
     </header>
 
@@ -711,6 +796,7 @@
                     <div class="product-info">
                         <div class="product-title">Air Jordan 4 Retro White Cement</div>
                         <div class="product-price">₪ 360</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Classic Jordan 4 design featuring white leather and cement grey accents. An icon that never goes out of style.</div>
                     </div>
                 </div>
@@ -720,6 +806,7 @@
                     <div class="product-info">
                         <div class="product-title">Yeezy Boost 350</div>
                         <div class="product-price">₪ 300</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Primeknit upper paired with full-length Boost midsole for unmatched comfort and a sleek, modern silhouette.</div>
                     </div>
                 </div>
@@ -729,6 +816,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Dunk Low "Strange Love"</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Crushed velvet base with suede overlays. Originally released for Valentine's Day — this pair is pure luxury.</div>
                     </div>
                 </div>
@@ -738,6 +826,7 @@
                     <div class="product-info">
                         <div class="product-title">New Balance 9060</div>
                         <div class="product-price">₪ 330</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">A bold futuristic take on classic 99X styling with wavy lines, premium suede, and chunky ABZORB cushioning.</div>
                     </div>
                 </div>
@@ -747,6 +836,7 @@
                     <div class="product-info">
                         <div class="product-title">Travis Scott Jordan 1 Fragment</div>
                         <div class="product-price">₪ 340</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The highly coveted triple collab. Signature reverse Swoosh, premium blue, black, and white leather construction.</div>
                     </div>
                 </div>
@@ -756,6 +846,7 @@
                     <div class="product-info">
                         <div class="product-title">Off-White Air Force "Lot 36"</div>
                         <div class="product-price">₪ 370</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Part of the iconic "Dear Summer" collection. Virgil Abloh's signature zip-ties, exposed foam, and secondary lacing.</div>
                     </div>
                 </div>
@@ -765,6 +856,7 @@
                     <div class="product-info">
                         <div class="product-title">Christian Dior CD Grey</div>
                         <div class="product-price">₪ 380</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">High fashion meets streetwear. Crafted in Italy with premium materials and the iconic Dior Oblique motif.</div>
                     </div>
                 </div>
@@ -774,6 +866,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Air Force 1 Low '07</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The ultimate streetwear staple. Crisp all-white leather, classic lines, and Air cushioning that never goes out of style.</div>
                     </div>
                 </div>
@@ -783,6 +876,7 @@
                     <div class="product-info">
                         <div class="product-title">Adidas Campus 00s</div>
                         <div class="product-price">₪ 320</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Y2K skate culture brought back to life. Thick laces, chunky suede proportions, and undeniable retro appeal.</div>
                     </div>
                 </div>
@@ -792,6 +886,7 @@
                     <div class="product-info">
                         <div class="product-title">Louis Vuitton LV Trainer</div>
                         <div class="product-price">₪ 370</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Designed by Virgil Abloh. Calf leather, intricate monogram details, and seven hours of stitching per pair.</div>
                     </div>
                 </div>
@@ -801,6 +896,7 @@
                     <div class="product-info">
                         <div class="product-title">NK SB Dunk Low Black Pigeon</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Built for the board, adopted by the streets. Padded tongue and Zoom Air unit for ultimate impact absorption.</div>
                     </div>
                 </div>
@@ -810,6 +906,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Dunk Panda</div>
                         <div class="product-price">₪ 310</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Signature T-toe design, smooth leather, and gum rubber outsole. Timeless black and white forever.</div>
                     </div>
                 </div>
@@ -819,6 +916,7 @@
                     <div class="product-info">
                         <div class="product-title">New Balance 2000</div>
                         <div class="product-price">₪ 360</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">A vintage basketball Oxford revived from 1989 archives. Clean, simple, the definition of a versatile daily driver.</div>
                     </div>
                 </div>
@@ -828,6 +926,7 @@
                     <div class="product-info">
                         <div class="product-title">Air Jordan 1 Retro High OG</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The sneaker that started it all. Premium leather, iconic color-blocking, and the classic Wings logo.</div>
                     </div>
                 </div>
@@ -837,6 +936,7 @@
                     <div class="product-info">
                         <div class="product-title">Yeezy Slides</div>
                         <div class="product-price">₪ 330</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The pinnacle of gorpcore. Single-moulded EVA foam construction — impossibly light, unmistakably Yeezy.</div>
                     </div>
                 </div>
@@ -846,6 +946,7 @@
                     <div class="product-info">
                         <div class="product-title">Asics Gel-NYC</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Early 2000s running aesthetics redefined. Layered metallic panels and signature GEL cushioning technology.</div>
                     </div>
                 </div>
@@ -855,6 +956,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Mind Black 001</div>
                         <div class="product-price">₪ 340</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Nike's latest recovery slipper — engineered foam, contoured footbed, and that unmistakable Nike DNA.</div>
                     </div>
                 </div>
@@ -864,6 +966,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Air Max 95</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Inspired by the human body. The midsole represents the spine, graduated panels act as muscles. Legendary comfort.</div>
                     </div>
                 </div>
@@ -873,6 +976,7 @@
                     <div class="product-info">
                         <div class="product-title">A Bathing Ape BAPE STA</div>
                         <div class="product-price">₪ 360</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">A Tokyo streetwear icon. Glossy patent leather, bold colorways, and the unmistakable star-shaped STA logo.</div>
                     </div>
                 </div>
@@ -882,6 +986,7 @@
                     <div class="product-info">
                         <div class="product-title">Numeri "Pink Denim"</div>
                         <div class="product-price">₪ 390</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Stand out with this unique pink denim construction. A bold statement piece for any streetwear enthusiast.</div>
                     </div>
                 </div>
@@ -893,6 +998,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 4 Retro Black Cat (2025)</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">All-black nubuck upper with the iconic Black Cat Jumpman. One of the most anticipated Jordan releases of 2025.</div>
                     </div>
                 </div>
@@ -902,6 +1008,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 4 Retro White Cement (2025)</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The 2025 retro. Identical to the 1989 original — premium white leather, cement grey splatter, and a visible Air unit.</div>
                     </div>
                 </div>
@@ -911,6 +1018,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 4 Retro SB Navy</div>
                         <div class="product-price">₪ 355</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Deep navy suede panels with gunmetal hardware. Clean, understated, and infinitely wearable every single day.</div>
                     </div>
                 </div>
@@ -920,6 +1028,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 4 Retro Lakers</div>
                         <div class="product-price">₪ 355</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Purple and gold leather panels pay homage to the Lakers dynasty. A collector's dream in every size.</div>
                     </div>
                 </div>
@@ -929,6 +1038,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 4 "Orchid" </div>
                         <div class="product-price">₪ 360</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Exclusive colourway with aged cream detailing and premium construction. Limited run — extremely high demand.</div>
                     </div>
                 </div>
@@ -938,6 +1048,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 4 Retro Cave Stone</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Warm stone suede with sail accents. An earthy neutral that pairs with literally everything in your wardrobe.</div>
                     </div>
                 </div>
@@ -947,6 +1058,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 5 Retro Wolf Grey (2026)</div>
                         <div class="product-price">₪ 355</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">2026 retro of the Wolf Grey classic. Reflective tongue, icy translucent outsole, and premium suede all the way through.</div>
                     </div>
                 </div>
@@ -956,6 +1068,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 5 Retro Awake (2025)</div>
                         <div class="product-price">₪ 350</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Grade school sizing of the 2026 Wolf Grey retro. Same premium materials, perfect for smaller sizes.</div>
                     </div>
                 </div>
@@ -965,6 +1078,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 11 Retro Gamma Blue (2025)</div>
                         <div class="product-price">₪ 360</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The Gamma Blue 11 returns for 2025. Electric blue patent leather, mesh upper, and full-length Zoom Air — a grail pair.</div>
                     </div>
                 </div>
@@ -974,6 +1088,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 3 Retro White Cement (2013)</div>
                         <div class="product-price">₪ 365</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The 2026 OG Chicago return. Red suede, nubuck panels, and that iconic holographic eye — MJ's favourite silhouette.</div>
                     </div>
                 </div>
@@ -983,6 +1098,7 @@
                     <div class="product-info">
                         <div class="product-title">Jordan 3 Blue And Copper</div>
                         <div class="product-price">₪ 375</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Jordan 3 Blue And Copper.</div>
                     </div>
                 </div>
@@ -992,6 +1108,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Dunk Low Retro White Black Panda</div>
                         <div class="product-price">₪ 310</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The colourway that broke the internet. Crisp white leather with bold black overlays — a permanent essential in any collection.</div>
                     </div>
                 </div>
@@ -1001,6 +1118,7 @@
                     <div class="product-info">
                         <div class="product-title">SB Dunk Low Power Puff Girls</div>
                         <div class="product-price">₪ 370</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Copper snake-print leather panels inspired by the Copperhead. Dashawn Jordan's most coveted signature SB to date.</div>
                     </div>
                 </div>
@@ -1010,6 +1128,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Air Force 1 Low Supreme Black</div>
                         <div class="product-price">₪ 375</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Supreme box logo meets the classic AF1. All-black construction with tonal Supreme branding on the toe box and heel tab.</div>
                     </div>
                 </div>
@@ -1019,6 +1138,7 @@
                     <div class="product-info">
                         <div class="product-title">Nike Air Force 1 Low Supreme White</div>
                         <div class="product-price">₪ 370</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">All-white leather with a subtle red Supreme hit on the strap and gum sole finish. One of the cleanest collab AF1s ever made.</div>
                     </div>
                 </div>
@@ -1028,6 +1148,7 @@
                     <div class="product-info">
                         <div class="product-title">Louis Vuitton LV Trainer Sneaker</div>
                         <div class="product-price">₪ 380</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Full-grain calf leather with intricate monogram detailing. Seven hours of stitching per pair — Virgil Abloh's LV masterpiece.</div>
                     </div>
                 </div>
@@ -1037,6 +1158,7 @@
                     <div class="product-info">
                         <div class="product-title">Louis Vuitton Skate Sneaker</div>
                         <div class="product-price">₪ 375</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">LV's skate silhouette with padded tongue, monogram canvas panels, and a chunky cupsole. Where luxury meets the streets.</div>
                     </div>
                 </div>
@@ -1046,6 +1168,7 @@
                     <div class="product-info">
                         <div class="product-title">Amiri Skel Top Low Sneaker</div>
                         <div class="product-price">₪ 385</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Hand-applied skeleton bones on premium suede and leather. Rock music meets luxury fashion — Amiri's most iconic silhouette.</div>
                     </div>
                 </div>
@@ -1055,6 +1178,7 @@
                     <div class="product-info">
                         <div class="product-title">MM Maison Margiela GATS</div>
                         <div class="product-price">₪ 380</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">The German Army Trainer reimagined by Margiela. Raw canvas upper, exposed stitching, and that iconic thick gum sole — deconstructed minimalism at its finest.</div>
                     </div>
                 </div>
@@ -1064,6 +1188,7 @@
                     <div class="product-info">
                         <div class="product-title">Mihara Yasuhiro Hank OG Canvas Low</div>
                         <div class="product-price">₪ 390</div>
+                        <button class="add-cart-btn" type="button">+ Add to Cart</button>
                         <div class="product-description">Avant-garde canvas low with an oversized OG sole and distressed finish. MMY challenges every convention of sneaker design.</div>
                     </div>
                 </div>
@@ -1098,7 +1223,33 @@
         <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
     </footer>
 
+    <!-- Supabase JS v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+    /* ===== Supabase (auth + cart persistence) ===== */
+    let isLoggedIn = false;
+    let sb = null;
+    try {
+        if (window.supabase) {
+            sb = window.supabase.createClient(
+                "https://syjaeymotxjgxnweciho.supabase.co",
+                "sb_publishable_pqCkUYqUYc6c50qUvRKQTw_FAjY2hI-"
+            );
+            sb.auth.getSession().then(({ data }) => {
+                isLoggedIn = !!(data && data.session && data.session.user);
+                refreshCartCount();
+            }).catch(() => { isLoggedIn = false; });
+            sb.auth.onAuthStateChange((_event, session) => {
+                isLoggedIn = !!session;
+                refreshCartCount();
+            });
+        } else {
+            console.warn('Supabase library did not load — treating user as logged out.');
+        }
+    } catch (err) {
+        console.error('Supabase init failed:', err);
+    }
+
     // ── Cursor ──
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', e => {
@@ -1209,7 +1360,109 @@
     });
 
     updateCarousel();
-    
+
+    // ── Add to Cart ──
+    const cartToast = document.getElementById('cart-toast');
+    const cartToastText = cartToast.querySelector('span');
+    const cartBadge = document.getElementById('cart-badge');
+    let toastTimer;
+    let cartCount = 0;
+
+    function setCartBadge(n) {
+        cartCount = n;
+        if (n > 0) {
+            cartBadge.textContent = n > 99 ? '99+' : n;
+            cartBadge.style.display = 'flex';
+        } else {
+            cartBadge.style.display = 'none';
+        }
+    }
+
+    async function refreshCartCount() {
+        if (!isLoggedIn || !sb) { setCartBadge(0); return; }
+        try {
+            const { data: sessionData } = await sb.auth.getSession();
+            const userId = sessionData.session.user.id;
+            const { data, error } = await sb.from('cart_items').select('qty').eq('user_id', userId);
+            if (error) throw error;
+            setCartBadge((data || []).reduce((sum, row) => sum + row.qty, 0));
+        } catch (err) {
+            console.error('Could not load cart count:', err);
+        }
+    }
+
+    function showToast(message) {
+        clearTimeout(toastTimer);
+        cartToastText.textContent = message;
+        cartToast.classList.add('show');
+        toastTimer = setTimeout(() => cartToast.classList.remove('show'), 2000);
+    }
+
+    // Titles here are unique even where the same image is reused for two
+    // different listings (e.g. LVS1.png, DNK.png), so the product id is
+    // derived from the title text rather than the image filename.
+    function slugify(str) {
+        return str
+            .toLowerCase()
+            .replace(/['"]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+    }
+
+    document.querySelectorAll('.add-cart-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // don't trigger the carousel card's own click (expand/navigate)
+
+            if (!isLoggedIn || !sb) {
+                window.location.href = 'log.html';
+                return;
+            }
+
+            const card = btn.closest('.shoe-item');
+            const title = card.querySelector('.product-title').textContent.trim();
+            const image = card.querySelector('img').getAttribute('src');
+            const priceText = card.querySelector('.product-price').textContent.trim();
+            const price = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+            const productId = slugify(title);
+
+            btn.disabled = true;
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                const userId = sessionData.session.user.id;
+
+                const { data: existing, error: selectErr } = await sb
+                    .from('cart_items')
+                    .select('id, qty')
+                    .eq('user_id', userId)
+                    .eq('product_id', productId)
+                    .maybeSingle();
+                if (selectErr) throw selectErr;
+
+                if (existing) {
+                    const { error: updateErr } = await sb
+                        .from('cart_items')
+                        .update({ qty: existing.qty + 1 })
+                        .eq('id', existing.id);
+                    if (updateErr) throw updateErr;
+                } else {
+                    const { error: insertErr } = await sb
+                        .from('cart_items')
+                        .insert({ user_id: userId, product_id: productId, brand: '', title, image, price, qty: 1 });
+                    if (insertErr) throw insertErr;
+                }
+
+                setCartBadge(cartCount + 1);
+                showToast('Added to Cart');
+            } catch (err) {
+                console.error('Add to cart failed:', err);
+                showToast('Something went wrong');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    });
+
     // ── Nav Drawer ──
     (function() {
         var menuBtn = document.getElementById('menu-btn');
