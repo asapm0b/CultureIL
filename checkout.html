@@ -14,6 +14,7 @@
             --gray-dim: rgba(255,255,255,0.08);
             --gray-border: rgba(255,255,255,0.12);
             --gray-text: #666;
+            --bit-blue: #0a5cff;
             --font-display: 'Bebas Neue', sans-serif;
             --font-body: 'DM Sans', sans-serif;
         }
@@ -147,24 +148,35 @@
 
         .bit-btn {
             width: 100%;
-            background: var(--white);
-            color: var(--black);
+            background: var(--bit-blue);
+            color: var(--white);
             border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             font-family: var(--font-body);
-            font-weight: 500;
-            font-size: 11px;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            padding: 14px 0;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            padding: 13px 0;
+            border-radius: 26px;
             cursor: none;
-            position: relative;
-            overflow: hidden;
-            transition: color 0.3s ease;
+            transition: filter 0.2s ease, transform 0.2s ease;
         }
-        .bit-btn span { position: relative; z-index: 1; }
-        .bit-btn::before { content: ''; position: absolute; inset: 0; background: var(--black); transform: translateY(101%); transition: transform 0.35s cubic-bezier(.7,0,.3,1); z-index: 0; }
-        .bit-btn:hover { color: var(--white); border: 1px solid var(--white); }
-        .bit-btn:hover::before { transform: translateY(0); }
+        .bit-btn:hover { filter: brightness(1.12); }
+        .bit-btn:active { transform: scale(0.98); }
+        .bit-badge {
+            background: var(--white);
+            color: var(--bit-blue);
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            padding: 3px 9px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
 
         .bit-reveal { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--gray-border); }
         .bit-reveal.show { display: block; animation: fadeIn 0.3s ease both; }
@@ -175,7 +187,8 @@
             font-size: 24px;
             letter-spacing: 2px;
             text-align: center;
-            border: 1px dashed rgba(255,255,255,.35);
+            color: var(--bit-blue);
+            border: 1px dashed var(--bit-blue);
             padding: 12px 0;
             margin-bottom: 10px;
         }
@@ -456,7 +469,7 @@
 
                     <div class="pay-method-card">
                         <div class="pay-method-title">Bit</div>
-                        <button class="bit-btn" type="button" id="bit-toggle"><span>Pay with Bit</span></button>
+                        <button class="bit-btn" type="button" id="bit-toggle"><span class="bit-badge">bit</span><span>Pay with Bit</span></button>
                         <div class="bit-reveal" id="bit-reveal">
                             <p>Send <strong>${money(total)}</strong> via the Bit app to:</p>
                             <div class="bit-phone">${BIT_PHONE_DISPLAY}</div>
@@ -528,7 +541,10 @@
                         console.error('PayPal error:', err);
                         alert("Something went wrong with PayPal — try Bit or cash instead.");
                     }
-                }).render('#paypal-button-container');
+                }).render('#paypal-button-container').catch(function(err) {
+                    console.error('PayPal render failed:', err);
+                    document.getElementById('paypal-fallback').style.display = 'block';
+                });
             } catch (err) {
                 console.error('PayPal render failed:', err);
                 document.getElementById('paypal-fallback').style.display = 'block';
