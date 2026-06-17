@@ -334,6 +334,7 @@
             border-top: 1px solid var(--gray-border);
         }
         .checkout-btn {
+            display: block;
             width: 100%;
             max-width: 320px;
             background: var(--white);
@@ -344,6 +345,7 @@
             font-size: 11px;
             letter-spacing: 2.5px;
             text-transform: uppercase;
+            text-align: center;
             padding: 15px 0;
             cursor: none;
             position: relative;
@@ -556,7 +558,7 @@
             <span>Total</span>
             <span id="summary-total">₪0</span>
         </div>
-        <button class="checkout-btn" id="checkout-btn" type="button"><span>Checkout</span></button>
+        <a href="checkout.html" class="checkout-btn" id="checkout-btn"><span>Checkout</span></a>
         <div class="checkout-note">PayPal, Bit, or cash via WhatsApp — pick one on the next page.</div>
     </div>
 
@@ -763,10 +765,6 @@
             cartLoading.textContent = "Couldn't load your cart — try refreshing.";
         }
     }
-
-    document.getElementById('checkout-btn').addEventListener('click', () => {
-        window.location.href = 'checkout.html';
-    });
 
     loadCart();
     </script>
