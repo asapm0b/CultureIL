@@ -557,7 +557,7 @@
             <span id="summary-total">₪0</span>
         </div>
         <button class="checkout-btn" id="checkout-btn" type="button"><span>Checkout</span></button>
-        <div class="checkout-note">Checkout isn't wired up to payments yet — this button is a placeholder for now.</div>
+        <div class="checkout-note">PayPal, Bit, or cash via WhatsApp — pick one on the next page.</div>
     </div>
 
     <!-- FOOTER -->
@@ -765,7 +765,7 @@
     }
 
     document.getElementById('checkout-btn').addEventListener('click', () => {
-        alert("Checkout isn't set up yet — this is a placeholder for now.");
+        window.location.href = 'checkout.html';
     });
 
     loadCart();
