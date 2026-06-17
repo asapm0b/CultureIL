@@ -457,11 +457,64 @@
             .header-right .h-nav-link { display: none !important; }
             .header-brand { font-size: 18px !important; }
         }
+
+        /* ─── ADD TO CART ─── */
+        .add-cart-btn {
+            align-self: flex-start;
+            background: none;
+            border: 1px solid var(--gray-border);
+            color: var(--gray-text);
+            font-family: var(--font-body);
+            font-size: 8px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 4px 9px;
+            margin: 1px 0 1px;
+            cursor: none;
+            transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .add-cart-btn:hover { border-color: var(--white); color: var(--white); }
+        .add-cart-btn:active { background: var(--white); color: var(--black); border-color: var(--white); }
+
+        /* ─── CART TOAST ─── */
+        .cart-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translate(-50%, 14px);
+            background: var(--white);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 13px 20px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 9000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .cart-toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .cart-toast svg { flex-shrink: 0; }
+
+        @media (hover: none) {
+            .add-cart-btn { cursor: pointer; }
+        }
     </style>
 </head>
 <body>
 
     <div class="cursor" id="cursor"></div>
+
+    <!-- CART TOAST -->
+    <div class="cart-toast" id="cart-toast">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>Added to Cart</span>
+    </div>
 
     <!-- TICKER -->
     <div class="ticker">
@@ -582,6 +635,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Raulph Lauren</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g ורוד, שחור, אפור, לבן , ותכלת</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -601,6 +655,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Corteiz</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -619,6 +674,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Cortiez</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -637,6 +693,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Cortiez</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -655,6 +712,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Cortiez</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -674,6 +732,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Essentials</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -693,6 +752,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Represent</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -712,6 +772,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Stone Island</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -731,6 +792,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">HellStar</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -750,6 +812,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">BAPE</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -769,6 +832,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Balenciaga</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -787,6 +851,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Balenciaga</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -806,6 +871,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Gallery Dept</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -825,6 +891,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Chrome Hearts</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -844,6 +911,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Amiri</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -862,6 +930,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Amiri</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -881,6 +950,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Stussy</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -900,6 +970,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Louis Vuitton</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -918,6 +989,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Nike</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -936,6 +1008,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Palm Angels</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -954,6 +1027,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Dior</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -972,6 +1046,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Travis Scott</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -990,6 +1065,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Vlone</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1008,6 +1084,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Fear of God</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1026,6 +1103,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Sp5der</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1044,6 +1122,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Supreme</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1062,6 +1141,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Off-White</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1080,6 +1160,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">R Culture חלק</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1098,6 +1179,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Denim Tears</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1116,6 +1198,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">New Balance</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1134,6 +1217,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Lanvin</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1152,6 +1236,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Under Armor</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1170,6 +1255,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Nike</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1188,6 +1274,7 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Versace</div>
+                <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
                     <span class="old-price">₪115</span>
@@ -1213,7 +1300,33 @@
         <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
     </footer>
 
+    <!-- Supabase JS v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+    /* ===== Supabase (auth check for Add to Cart) ===== */
+    /* Wrapped in try/catch so a failed/slow CDN load can never break the
+       rest of the page's scripts (cursor, filters, nav drawer, cart). If
+       anything here fails, isLoggedIn safely stays false. */
+    let isLoggedIn = false;
+    try {
+        if (window.supabase) {
+            const sb = window.supabase.createClient(
+                "https://syjaeymotxjgxnweciho.supabase.co",
+                "sb_publishable_pqCkUYqUYc6c50qUvRKQTw_FAjY2hI-"
+            );
+            sb.auth.getSession().then(({ data }) => {
+                isLoggedIn = !!(data && data.session && data.session.user);
+            }).catch(() => { isLoggedIn = false; });
+            sb.auth.onAuthStateChange((_event, session) => {
+                isLoggedIn = !!session;
+            });
+        } else {
+            console.warn('Supabase library did not load — treating user as logged out.');
+        }
+    } catch (err) {
+        console.error('Supabase init failed:', err);
+    }
+
     // ── Cursor ──
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', e => {
@@ -1239,6 +1352,27 @@
                 const show = filter === 'all' || card.dataset.category === filter;
                 card.style.display = show ? 'flex' : 'none';
             });
+        });
+    });
+
+    // ── Add to Cart ──
+    const cartToast = document.getElementById('cart-toast');
+    let toastTimer;
+    function showAddedToCart() {
+        clearTimeout(toastTimer);
+        cartToast.classList.add('show');
+        toastTimer = setTimeout(() => cartToast.classList.remove('show'), 2000);
+    }
+
+    document.querySelectorAll('.add-cart-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isLoggedIn) {
+                showAddedToCart();
+            } else {
+                window.location.href = 'log.html';
+            }
         });
     });
 
