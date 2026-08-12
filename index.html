@@ -145,6 +145,23 @@
         .promo-copy { background: none; border: none; color: var(--dim); font-family: var(--font-b); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; cursor: none; transition: color .2s; }
         .promo-copy:hover { color: #fff; }
         @media (hover: none) { .promo-close, .promo-btn, .promo-copy { cursor: pointer; } }
+        .mystery-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s ease; }
+        .mystery-overlay.show { opacity: 1; visibility: visible; }
+        .mystery-box { position: relative; width: 100%; max-width: 380px; background: #050505; border: 1px solid var(--border); padding: 40px 30px 34px; text-align: center; transform: translateY(16px) scale(.98); transition: transform .4s cubic-bezier(.16,1,.3,1); }
+        .mystery-overlay.show .mystery-box { transform: translateY(0) scale(1); }
+        .mystery-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--dim); font-size: 22px; line-height: 1; cursor: none; transition: color .2s; }
+        .mystery-close:hover { color: #fff; }
+        .mystery-icon-wrap { position: relative; width: 172px; height: 152px; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; }
+        .mystery-icon-wrap::before { content: ''; position: absolute; inset: -14px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.14), rgba(255,255,255,0) 68%); }
+        .mystery-icon-wrap svg { position: relative; z-index: 1; width: 100%; height: 100%; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6)); }
+        .mystery-title { font-family: var(--font-d); font-size: 30px; letter-spacing: 1px; line-height: 1.2; margin-bottom: 10px; }
+        .mystery-text { font-size: 13px; line-height: 1.75; color: var(--dim); margin-bottom: 26px; }
+        .mystery-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: #fff; color: #000; border: none; font-family: var(--font-b); font-weight: 500; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 0; cursor: none; position: relative; overflow: hidden; transition: color .3s; }
+        .mystery-btn span { position: relative; z-index: 1; }
+        .mystery-btn::before { content: ''; position: absolute; inset: 0; background: #000; transform: translateY(101%); transition: transform .35s cubic-bezier(.7,0,.3,1); z-index: 0; }
+        .mystery-btn:hover { color: #fff; border: 1px solid #fff; }
+        .mystery-btn:hover::before { transform: translateY(0); }
+        @media (hover: none) { .mystery-close, .mystery-btn { cursor: pointer; } }
     </style>
 </head>
 <body>
@@ -209,6 +226,34 @@
                 <div class="promo-coupon"><span class="promo-coupon-code">2027</span></div>
                 <button class="promo-copy" id="promo-copy">Tap to copy</button>
             </div>
+        </div>
+    </div>
+
+    <div class="mystery-overlay" id="mystery-overlay">
+        <div class="mystery-box">
+            <button class="mystery-close" id="mystery-close">×</button>
+            <div class="mystery-icon-wrap">
+                <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="60" cy="103" rx="34" ry="6" fill="#000" opacity="0.5"/>
+                    <polygon points="22,78 60,98 60,58 22,38" fill="#ffffff" opacity="0.42"/>
+                    <polygon points="98,78 60,98 60,58 98,38" fill="#ffffff" opacity="0.68"/>
+                    <polygon points="60,18 98,38 60,58 22,38" fill="#ffffff" opacity="0.94"/>
+                    <polyline points="22,38 60,58 98,38" fill="none" stroke="#000000" stroke-opacity="0.28" stroke-width="1.3"/>
+                    <polygon points="60,18 98,38 60,58 22,38" fill="none" stroke="#000" stroke-opacity="0.15" stroke-width="0.6"/>
+                    <polyline points="22,38 22,78 60,98 60,58" fill="none" stroke="#000" stroke-opacity="0.15" stroke-width="0.6"/>
+                    <polyline points="98,38 98,78 60,98" fill="none" stroke="#000" stroke-opacity="0.15" stroke-width="0.6"/>
+                    <text x="79" y="80" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="42" fill="#000" fill-opacity="0.62">?</text>
+                    <circle cx="97" cy="24" r="18" fill="#fff"/>
+                    <circle cx="97" cy="24" r="18" fill="none" stroke="#000" stroke-opacity="0.1" stroke-width="1"/>
+                    <text x="97" y="22" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="13" letter-spacing="0.5" fill="#000">10%</text>
+                    <text x="97" y="32" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="8" letter-spacing="1.5" fill="#000" opacity="0.75">OFF</text>
+                </svg>
+            </div>
+            <div class="mystery-title" dir="rtl">משהו חדש הגיע!</div>
+            <div class="mystery-text" dir="rtl">עכשיו ב-CULTUREIL מיסטרי בוקסים<br>במחירים שווים במיוחד</div>
+            <a href="myst.html" class="mystery-btn" id="mystery-cta">
+                <span>לצפייה</span>
+            </a>
         </div>
     </div>
 
@@ -600,6 +645,29 @@
             }
         });
         [closeB, followB, copyB].forEach(function(el){
+            el.addEventListener('mouseenter', function(){ cursor && cursor.classList.add('hovering'); });
+            el.addEventListener('mouseleave', function(){ cursor && cursor.classList.remove('hovering'); });
+        });
+    })();
+
+    (function(){
+        var overlay = document.getElementById('mystery-overlay');
+        var closeB  = document.getElementById('mystery-close');
+        var ctaB    = document.getElementById('mystery-cta');
+        if(!overlay) return;
+        var SEEN = 'rc_mystery_seen';
+        function open(){ overlay.classList.add('show'); cursor && cursor.classList.remove('hovering'); }
+        function close(){ overlay.classList.remove('show'); }
+        var alreadySeen = false;
+        try { alreadySeen = sessionStorage.getItem(SEEN) === '1'; } catch(e){}
+        if(!alreadySeen){
+            setTimeout(open, 4000);
+            try { sessionStorage.setItem(SEEN, '1'); } catch(e){}
+        }
+        closeB.addEventListener('click', close);
+        overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+        [closeB, ctaB].forEach(function(el){
             el.addEventListener('mouseenter', function(){ cursor && cursor.classList.add('hovering'); });
             el.addEventListener('mouseleave', function(){ cursor && cursor.classList.remove('hovering'); });
         });
