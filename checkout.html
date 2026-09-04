@@ -359,12 +359,12 @@
     </footer>
 
     <!-- ============================================================
-         PayPal Buttons SDK.
-         ⚠ REPLACE "PASTE_YOUR_PAYPAL_CLIENT_ID_HERE" with your real
-         Client ID from developer.paypal.com (My Apps & Credentials).
-         Until you do, the PayPal button below just won't render.
+         PayPal Buttons SDK — using your sandbox client ID.
+         ⚠ When you go live, swap this to your LIVE client ID and
+         make sure the two edge functions are also pointed at the
+         live PayPal API base URL.
     ============================================================= -->
-    <script src="https://www.paypal.com/sdk/js?client-id=PASTE_YOUR_PAYPAL_CLIENT_ID_HERE&currency=ILS"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AXDa2bh5S0fwmaFvzigCD81U2cw_wnB_oBpBImW0sE5oAu8uTdf1zS_3m6qgTGJUR7U1P33fHYYXax0k&currency=ILS"></script>
 
     <!-- Supabase JS v2 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -421,6 +421,9 @@
        Israeli 050-123-4567 becomes 972501234567. */
     const BIT_PHONE_DISPLAY = "052-239-8396";
     const WHATSAPP_NUMBER = "972522398396";
+
+    // ⚠ Your two Supabase edge functions live here.
+    const SUPABASE_FUNCTIONS_URL = "https://syjaeymotxjgxnweciho.supabase.co/functions/v1";
 
     let currentUserId = null;
     let cartRows = [];
@@ -521,22 +524,65 @@
             }
         });
 
-        // PayPal
+        // ── PayPal (backed by Supabase edge functions) ──
         if (window.paypal) {
             try {
                 paypal.Buttons({
                     style: { layout: 'vertical', color: 'black', shape: 'pill', label: 'pay' },
-                    createOrder: function(data, actions) {
-                        return actions.order.create({
-                            purchase_units: [{ amount: { value: total.toFixed(2), currency_code: 'ILS' } }]
-                        });
+
+                    createOrder: async function(data, actions) {
+                        try {
+                            const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/paypal-create-order`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    amount: total.toFixed(2),
+                                    currency: 'ILS'
+                                })
+                            });
+
+                            const orderData = await res.json().catch(() => null);
+
+                            if (!res.ok || !orderData || !orderData.orderId) {
+                                console.error('Create order failed:', res.status, orderData);
+                                throw new Error(orderData && orderData.error ? orderData.error : 'Could not create PayPal order');
+                            }
+
+                            return orderData.orderId;
+                        } catch (err) {
+                            console.error('createOrder error:', err);
+                            alert("Couldn't start the PayPal order — try Bit or cash instead.");
+                            throw err;
+                        }
                     },
-                    onApprove: function(data, actions) {
-                        return actions.order.capture().then(async function() {
+
+                    onApprove: async function(data, actions) {
+                        try {
+                            const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/paypal-capture-order`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ orderId: data.orderID })
+                            });
+
+                            const captureData = await res.json().catch(() => null);
+
+                            if (!res.ok || !captureData || captureData.status !== 'COMPLETED') {
+                                console.error('Capture failed:', res.status, captureData);
+                                throw new Error(captureData && captureData.error ? captureData.error : 'Could not confirm payment');
+                            }
+
                             await clearCartAfterPayment();
                             renderSuccess();
-                        });
+                        } catch (err) {
+                            console.error('onApprove/capture error:', err);
+                            alert("Payment was approved but we couldn't confirm it — please message us on WhatsApp so we can verify your order.");
+                        }
                     },
+
+                    onCancel: function(data) {
+                        console.log('PayPal payment cancelled by user:', data);
+                    },
+
                     onError: function(err) {
                         console.error('PayPal error:', err);
                         alert("Something went wrong with PayPal — try Bit or cash instead.");
