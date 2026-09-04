@@ -424,6 +424,9 @@
 
     // ⚠ Your two Supabase edge functions live here.
     const SUPABASE_FUNCTIONS_URL = "https://syjaeymotxjgxnweciho.supabase.co/functions/v1";
+    // Same publishable/anon key used above in createClient — required so
+    // Supabase's default JWT check on Edge Functions doesn't reject the request.
+    const SUPABASE_ANON_KEY = "sb_publishable_pqCkUYqUYc6c50qUvRKQTw_FAjY2hI-";
 
     let currentUserId = null;
     let cartRows = [];
@@ -534,7 +537,10 @@
                         try {
                             const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/paypal-create-order`, {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                                },
                                 body: JSON.stringify({
                                     amount: total.toFixed(2),
                                     currency: 'ILS'
@@ -560,7 +566,10 @@
                         try {
                             const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/paypal-capture-order`, {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                                },
                                 body: JSON.stringify({ orderId: data.orderID })
                             });
 
