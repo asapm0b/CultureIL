@@ -2071,7 +2071,7 @@
                         console.warn('cart_items has no "size" column yet — saving without it. Add a text column named "size" to persist it.', insertErr);
                         const retry = await sb
                             .from('cart_items')
-                            .insert({ user_id: userId, product_id: productId, brand: '', title, image, price, qty: 1 });
+                            .insert({ user_id: userId, product_id: productId, brand: '' + size, title, image, price, qty: 1 });
                         insertErr = retry.error;
                     }
 
