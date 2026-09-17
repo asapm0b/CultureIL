@@ -254,7 +254,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+            transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.2s ease;
         }
 
         .product-card:hover .img-wrap img { transform: scale(1.06); }
@@ -458,6 +458,48 @@
             .header-brand { font-size: 18px !important; }
         }
 
+        /* ─── SIZE SELECTOR ─── */
+        .size-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 2px;
+            flex-wrap: wrap;
+        }
+        .size-btn {
+            background: none;
+            border: 1px solid var(--gray-border);
+            color: var(--gray-text);
+            font-family: var(--font-body);
+            font-size: 8px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 3px 7px;
+            cursor: none;
+            transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .size-btn:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
+        .size-btn.selected { background: var(--white); color: var(--black); border-color: var(--white); }
+
+        /* ─── COLOR SWATCHES ─── */
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 1px;
+        }
+        .color-dot {
+            width: 15px; height: 15px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.25);
+            cursor: none;
+            padding: 0;
+            flex-shrink: 0;
+            transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+        }
+        .color-dot:hover { transform: scale(1.15); }
+        .color-dot.selected { border-color: var(--white); box-shadow: 0 0 0 2px rgba(255,255,255,0.18); }
+
         /* ─── ADD TO CART ─── */
         .add-cart-btn {
             align-self: flex-start;
@@ -503,6 +545,7 @@
 
         @media (hover: none) {
             .add-cart-btn { cursor: pointer; }
+            .size-btn, .color-dot { cursor: pointer; }
         }
 
         /* ─── HEADER CART ICON ─── */
@@ -671,10 +714,23 @@
             <div class="img-wrap">
                 <img src="RLP.png" alt="Raulph Lauren">
                 <div class="sale-tag">Sale</div>
-                <div class="badge">+3 colors</div>
+                <div class="badge">5 colors</div>
             </div>
             <div class="product-info">
                 <div class="product-brand">Raulph Lauren</div>
+                <div class="size-row">
+                    <button class="size-btn selected" type="button">S</button>
+                    <button class="size-btn" type="button">M</button>
+                    <button class="size-btn" type="button">L</button>
+                    <button class="size-btn" type="button">XL</button>
+                </div>
+                <div class="color-row">
+                    <button class="color-dot selected" style="background:#e8a0b0" data-color="Pink" data-img="RLP-pink.png" type="button" title="Pink"></button>
+                    <button class="color-dot" style="background:#141414" data-color="Black" data-img="RLP-black.png" type="button" title="Black"></button>
+                    <button class="color-dot" style="background:#9a9a9a" data-color="Grey" data-img="RLP-grey.png" type="button" title="Grey"></button>
+                    <button class="color-dot" style="background:#f2f2f2" data-color="White" data-img="RLP-white.png" type="button" title="White"></button>
+                    <button class="color-dot" style="background:#8fc7d9" data-color="Sky Blue" data-img="RLP-skyblue.png" type="button" title="Sky Blue"></button>
+                </div>
                 <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g ורוד, שחור, אפור, לבן , ותכלת</div>
                 <div class="price-row">
@@ -695,6 +751,17 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Corteiz</div>
+                <div class="size-row">
+                    <button class="size-btn selected" type="button">S</button>
+                    <button class="size-btn" type="button">M</button>
+                    <button class="size-btn" type="button">L</button>
+                    <button class="size-btn" type="button">XL</button>
+                </div>
+                <div class="color-row">
+                    <button class="color-dot selected" style="background:#141414" data-color="Black" data-img="CORT-black.png" type="button" title="Black"></button>
+                    <button class="color-dot" style="background:#9a9a9a" data-color="Grey" data-img="CORT-grey.png" type="button" title="Grey"></button>
+                    <button class="color-dot" style="background:#1c2b3d" data-color="Navy" data-img="CORT-navy.png" type="button" title="Navy"></button>
+                </div>
                 <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
@@ -772,6 +839,17 @@
             </div>
             <div class="product-info">
                 <div class="product-brand">Essentials</div>
+                <div class="size-row">
+                    <button class="size-btn selected" type="button">S</button>
+                    <button class="size-btn" type="button">M</button>
+                    <button class="size-btn" type="button">L</button>
+                    <button class="size-btn" type="button">XL</button>
+                </div>
+                <div class="color-row">
+                    <button class="color-dot selected" style="background:#141414" data-color="Black" data-img="est-black.png" type="button" title="Black"></button>
+                    <button class="color-dot" style="background:#e9e6df" data-color="Sand" data-img="est-sand.png" type="button" title="Sand"></button>
+                    <button class="color-dot" style="background:#9a9a9a" data-color="Grey" data-img="est-grey.png" type="button" title="Grey"></button>
+                </div>
                 <button class="add-cart-btn" type="button">+ Add to Cart</button>
                 <div class="product-title" dir="auto">חולצה 220g</div>
                 <div class="price-row">
@@ -1399,6 +1477,42 @@
         });
     });
 
+    // ── Size selector ──
+    document.querySelectorAll('.size-row').forEach(row => {
+        row.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                row.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+    });
+
+    // ── Color swatches (swap the product image to that color's photo) ──
+    // NOTE: the per-color image files referenced in data-img (e.g. RLP-pink.png)
+    // don't exist yet — add them to the repo later. Until then the browser
+    // will just show a broken image for non-default colors.
+    document.querySelectorAll('.color-row').forEach(row => {
+        const card = row.closest('.product-card');
+        const img = card.querySelector('.img-wrap img');
+        const defaultSrc = img.getAttribute('src');
+        row.querySelectorAll('.color-dot').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                row.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+                dot.classList.add('selected');
+                const newSrc = dot.getAttribute('data-img');
+                img.style.opacity = '0.4';
+                setTimeout(() => {
+                    img.setAttribute('src', newSrc || defaultSrc);
+                    img.style.opacity = '1';
+                }, 90);
+            });
+        });
+    });
+
     // ── Add to Cart ──
     const cartToast = document.getElementById('cart-toast');
     const cartToastText = cartToast.querySelector('span');
@@ -1448,11 +1562,19 @@
 
             const card = btn.closest('.product-card');
             const brand = card.querySelector('.product-brand').textContent.trim();
-            const title = card.querySelector('.product-title').textContent.trim();
+            let title = card.querySelector('.product-title').textContent.trim();
             const image = card.querySelector('img').getAttribute('src');
             const priceText = card.querySelector('.new-price').textContent.trim();
             const price = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
-            const productId = image;
+
+            const sizeBtn = card.querySelector('.size-btn.selected');
+            const colorDot = card.querySelector('.color-dot.selected');
+            const size = sizeBtn ? sizeBtn.textContent.trim() : null;
+            const color = colorDot ? colorDot.getAttribute('data-color') : null;
+            if (size || color) {
+                title += ' (' + [color, size].filter(Boolean).join(', ') + ')';
+            }
+            const productId = image + '|' + (color || '') + '|' + (size || '');
 
             btn.disabled = true;
             try {
