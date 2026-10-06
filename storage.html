@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storage — R Culture IL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--black:#000;--white:#fff;--gb:rgba(255,255,255,0.12);--gt:#666;--up:#5aff5a;--down:#ff5555;--fd:'Bebas Neue',sans-serif;--fb:'DM Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:.4}
+.ticker{overflow:hidden;background:var(--white);color:var(--black);padding:7px 0;font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap}
+.ticker-inner{display:inline-block;animation:tk 22s linear infinite}
+.ticker-inner span{display:inline-block;padding:0 50px}
+.ticker-inner span::after{content:'•';margin-left:50px}
+@keyframes tk{to{transform:translateX(-50%)}}
+header{position:sticky;top:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--gb);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:54px}
+header>div{flex:1;display:flex;align-items:center;gap:22px}
+.hr{justify-content:flex-end}
+.brand{font-family:var(--fd);font-size:22px;letter-spacing:3px;text-align:center;flex:none!important}
+.nl{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gt);transition:color .2s}
+.nl:hover{color:var(--white)}
+.pill{font-size:9px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--gb);padding:4px 10px;color:var(--gt)}
+.page-header{border-bottom:1px solid var(--gb);padding:28px 40px 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.page-title{font-family:var(--fd);font-size:clamp(52px,8vw,96px);letter-spacing:4px;line-height:1}
+.meta{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);padding-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--gb);border-bottom:1px solid var(--gb)}
+.stat{background:var(--black);padding:20px 24px}
+.stat small{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);display:block}
+.stat b{font-family:var(--fd);font-size:40px;letter-spacing:1px;font-weight:400;display:flex;align-items:center;gap:10px}
+.stat b svg{width:26px;height:26px}
+.up{color:var(--up)}.down{color:var(--down)}
+.tools{position:sticky;top:54px;z-index:400;background:rgba(0,0,0,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--gb);padding:12px 40px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.tools input{flex:1;min-width:200px;background:rgba(255,255,255,.03);border:1px solid var(--gb);color:var(--white);font-family:var(--fb);font-size:12px;letter-spacing:1px;padding:10px 14px;outline:none}
+.tools input:focus,.cell:focus,.qty:focus{border-color:rgba(255,255,255,.45)}
+.chips{display:flex;gap:0;overflow-x:auto}
+.chip{background:none;border:none;border-bottom:2px solid transparent;color:var(--gt);font-family:var(--fb);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px 14px;cursor:pointer;white-space:nowrap}
+.chip:hover{color:var(--white)}.chip.on{color:var(--white);border-bottom-color:var(--white)}
+.sec{padding:34px 40px;border-bottom:1px solid var(--gb)}
+.sec h2{font-family:var(--fd);font-size:44px;letter-spacing:3px;font-weight:400;line-height:1}
+.sec p.sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);margin:6px 0 18px}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--gb);border:1px solid var(--gb)}
+.row{background:var(--black);display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:56px}
+.row:hover{background:#080808}
+.num{font-family:var(--fd);font-size:15px;color:var(--gt);width:34px;flex:none}
+.nm{flex:1;font-size:12px;line-height:1.35}
+.nm i{display:block;font-style:normal;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gt)}
+.pr{font-family:var(--fd);font-size:17px;letter-spacing:1px}
+.x{font-family:var(--fd);font-size:26px;letter-spacing:1px;min-width:44px;text-align:right}
+.x.low{color:var(--down)}
+.btn{background:none;border:1px solid var(--gb);color:var(--gt);font-family:var(--fb);font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:6px 11px;cursor:pointer;transition:all .2s}
+.btn:hover{border-color:var(--white);color:var(--white)}
+.btn:active{background:var(--white);color:var(--black)}
+.sq{width:28px;padding:6px 0;text-align:center}
+.qty{width:54px;background:rgba(255,255,255,.03);border:1px solid var(--gb);color:var(--white);font-family:var(--fb);font-size:12px;padding:6px;text-align:center;outline:none}
+.empty{background:var(--black);padding:30px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);grid-column:1/-1}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:34px}
+.chart{display:flex;align-items:flex-end;gap:8px;height:170px;border-bottom:1px solid var(--gb);padding-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:5px;min-width:0}
+.bar div{width:100%;background:var(--white);min-height:2px;transition:height .4s}
+.bar.u div{background:var(--up)}.bar.d div{background:var(--down)}
+.bar span{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--gt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);margin-bottom:10px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);font-weight:400;text-align:left;padding:10px 12px;border-bottom:1px solid var(--gb)}
+td{padding:6px 12px;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+.cell{width:100%;background:transparent;border:1px solid transparent;color:var(--white);font-family:var(--fb);font-size:13px;padding:7px 8px;outline:none}
+.cell:hover{border-color:var(--gb)}
+.chg{font-family:var(--fd);font-size:20px;letter-spacing:1px}
+footer{padding:20px 40px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gt);display:flex;justify-content:space-between}
+@media(max-width:768px){header,.page-header,.tools,.sec,footer{padding-left:16px;padding-right:16px}.charts{grid-template-columns:1fr;gap:28px}.list{grid-template-columns:1fr}.hr .nl{display:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="arrow" viewBox="0 0 560 560"><polygon fill="currentColor" points="38,415 158,260 228,310 336,168 310,145 425,103 418,228 390,208 240,403 170,353 92,455"/></symbol></svg>
+
+<div class="ticker"><div class="ticker-inner"><span>Admin Only</span><span>Warehouse Storage</span><span>Track Every Drop</span><span>R Culture IL</span><span>Admin Only</span><span>Warehouse Storage</span><span>Track Every Drop</span><span>R Culture IL</span></div></div>
+
+<header>
+  <div><span class="pill">Admin</span></div>
+  <div class="brand">R CULTURE IL</div>
+  <div class="hr"><a href="index.html" class="nl">Home</a><a href="cart.html" class="nl">Cart</a></div>
+</header>
+
+<div class="page-header"><div class="page-title">Storage</div><div class="meta" id="hmeta"></div></div>
+
+<div class="stats" id="stats"></div>
+
+<div class="tools">
+  <input id="q" type="search" placeholder="Search items — name, brand or #number">
+  <div class="chips" id="chips"></div>
+</div>
+
+<section class="sec">
+  <h2>In Warehouse</h2>
+  <p class="sub">Items currently in stock</p>
+  <div class="list" id="stock"></div>
+</section>
+
+<section class="sec">
+  <h2>Add To Existing Stock</h2>
+  <p class="sub">Full catalog · pick a quantity and add it</p>
+  <div class="list" id="catalog"></div>
+</section>
+
+<section class="sec">
+  <h2>Analytics</h2>
+  <p class="sub">Based on your sales table + current stock</p>
+  <div class="charts">
+    <div><div class="lbl">Revenue per period (green = up, red = down)</div><div class="chart" id="revchart"></div></div>
+    <div><div class="lbl">Units in warehouse by category</div><div class="chart" id="catchart"></div></div>
+  </div>
+  <div class="lbl">Sales table — click any cell to edit</div>
+  <div class="tw"><table>
+    <thead><tr><th>Period</th><th>Units sold</th><th>Revenue ₪</th><th>vs previous</th><th></th></tr></thead>
+    <tbody id="sales"></tbody>
+  </table></div>
+  <div style="margin-top:14px"><button class="btn" id="addrow">+ Add period</button></div>
+</section>
+
+<footer><span>R Culture IL® 2025 — Admin</span><button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button></footer>
+
+<script>
+/* ===== CATALOG (136 items, numbered) ===== */
+const C=[
+ ["Pants",139,"Ralph Lauren,Essentials,Nike,Corteiz,Amiri,Stone Island,Denim Tears,Carhartt,Burberry,HellStar,Syna World,Lacoste","Pants"],
+ ["Sweaters",169,"Ralph Lauren,Essentials,Stone Island,Burberry,Amiri,Corteiz,HellStar,Syna World,Lacoste,Ami Paris,Carhartt,Nike","Sweater"],
+ ["Shorts",99,"Ralph Lauren,Essentials,Nike,Corteiz,Amiri,Burberry,Stone Island,Denim Tears,Syna World,Rhude,CB,RL 1977,HellStar,Louis Vuitton,Nike SB,LV Beach,Sp5der,Ami Paris,Lacoste,Ralph Lauren Slim,Essentials V2,Nike Pro,Corteiz Cargo,Amiri Mesh,Burberry Check,Stone Island Swim,Denim Tears V2,Syna World Cargo,Rhude V2,CB Swim,RL 1977 V2,HellStar Denim,LV Mesh,Nike Swim,Ami Paris Denim,Casablanca,Plain,Dosa Che","Shorts"],
+ ["T-Shirts",90,"Ralph Lauren,Corteiz,Cortiez P,Cortiez B,Cortiez BL,Essentials,Represent,Stone Island,HellStar,BAPE,Balenciaga,Balenciaga 2,Gallery Dept,Chrome Hearts,Amiri,Amiri 2,Stussy,Louis Vuitton,Nike,Palm Angels,Dior,Travis Scott,Vlone,Fear of God,Sp5der,Supreme,Off-White,R Culture Plain,Denim Tears,New Balance,Lanvin,Under Armor,Nike 2,Versace","Tee"]
+];
+const SN='Air Jordan 4 Retro White Cement:360;Yeezy Boost 350:300;Nike Dunk Low "Strange Love":350;New Balance 9060:330;Travis Scott Jordan 1 Fragment:340;Off-White Air Force "Lot 36":370;Christian Dior CD Grey:380;Nike Air Force 1 Low \'07:350;Adidas Campus 00s:320;Louis Vuitton LV Trainer:370;NK SB Dunk Low Black Pigeon:350;Nike Dunk Panda:310;New Balance 2000:360;Air Jordan 1 Retro High OG:350;Yeezy Slides:330;Asics Gel-NYC:350;Nike Mind Black 001:340;Nike Air Max 95:350;A Bathing Ape BAPE STA:360;Numeri "Pink Denim":390;Jordan 4 Retro Black Cat (2025):350;Jordan 4 Retro White Cement (2025):350;Jordan 4 Retro SB Navy:355;Jordan 4 Retro Lakers:355;Jordan 4 "Orchid":360;Jordan 4 Retro Cave Stone:350;Jordan 5 Retro Wolf Grey (2026):355;Jordan 5 Retro Awake (2025):350;Jordan 11 Retro Gamma Blue (2025):360;Jordan 3 Retro White Cement (2013):365;Jordan 3 Blue And Copper:375;Nike Dunk Low Retro White Black Panda:310;SB Dunk Low Power Puff Girls:370;Nike Air Force 1 Low Supreme Black:375;Nike Air Force 1 Low Supreme White:370;Louis Vuitton LV Trainer Sneaker:380;Louis Vuitton Skate Sneaker:375;Amiri Skel Top Low Sneaker:385;MM Maison Margiela GATS:380;Mihara Yasuhiro Hank OG Canvas Low:390';
+const I=[];let n=0;
+C.forEach(([cat,price,list,suf])=>list.split(",").forEach(b=>I.push({id:++n,cat,name:b+" "+suf,price})));
+SN.split(";").forEach(s=>{const k=s.lastIndexOf(":");I.push({id:++n,cat:"Sneakers",name:s.slice(0,k),price:+s.slice(k+1)})});
+const CATS=["All","Pants","Sweaters","Shorts","T-Shirts","Sneakers"];
+
+/* ===== STATE (saved in this browser) ===== */
+function load(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v||d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let stock=load("rc_stock",{});
+let sales=load("rc_sales",[
+ {p:"Month 1 (sample)",u:42,r:4100},{p:"Month 2 (sample)",u:55,r:5300},{p:"Month 3 (sample)",u:48,r:4600},{p:"Month 4 (sample)",u:63,r:6200},{p:"Month 5 (sample)",u:71,r:7050}]);
+let cat="All",q="";
+const LOW=2,$=id=>document.getElementById(id);
+const fmt=v=>"₪"+Math.round(v).toLocaleString("en-US");
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const pct=(a,b)=>b?(a-b)/b*100:null;
+const arrow=(up,cls)=>`<svg class="${cls}" style="${up?'':'transform:scaleY(-1)'}"><use href="#arrow"/></svg>`;
+
+function match(it){
+  if(cat!=="All"&&it.cat!==cat)return false;
+  if(!q)return true;
+  const t=q.replace("#","");
+  return it.name.toLowerCase().includes(q)||it.cat.toLowerCase().includes(q)||String(it.id)===t;
+}
+
+function renderStats(){
+  const ids=Object.keys(stock).filter(i=>stock[i]>0);
+  const units=ids.reduce((s,i)=>s+stock[i],0);
+  const val=ids.reduce((s,i)=>s+stock[i]*I[i-1].price,0);
+  const low=ids.filter(i=>stock[i]<=LOW).length;
+  const rev=sales.reduce((s,r)=>s+(+r.r||0),0),sold=sales.reduce((s,r)=>s+(+r.u||0),0);
+  const last=sales[sales.length-1],prev=sales[sales.length-2];
+  const ch=last&&prev?pct(+last.r,+prev.r):null;
+  $("hmeta").textContent=I.length+" items · "+units+" units in warehouse";
+  $("stats").innerHTML=
+   `<div class="stat"><small>Units in warehouse</small><b>${units}</b></div>
+    <div class="stat"><small>Stock value</small><b>${fmt(val)}</b></div>
+    <div class="stat"><small>Different items</small><b>${ids.length}</b></div>
+    <div class="stat"><small>Low stock (≤${LOW})</small><b class="${low?'down':''}">${low}</b></div>
+    <div class="stat"><small>Total revenue</small><b>${fmt(rev)}</b></div>
+    <div class="stat"><small>Units sold</small><b>${sold}</b></div>
+    <div class="stat"><small>Last period</small><b class="${ch==null?'':ch>=0?'up':'down'}">${ch==null?'—':arrow(ch>=0,ch>=0?'up':'down')+(ch>=0?'+':'')+ch.toFixed(1)+'%'}</b></div>`;
+}
+
+function renderStock(){
+  const rows=I.filter(it=>(stock[it.id]||0)>0&&match(it));
+  $("stock").innerHTML=rows.length?rows.map(it=>{const s=stock[it.id];return `<div class="row">
+    <span class="num">#${it.id}</span>
+    <span class="nm">${esc(it.name)}<i>${it.cat} · ${fmt(it.price)}</i></span>
+    <span class="x ${s<=LOW?'low':''}">${s}x</span>
+    <button class="btn sq" data-a="dec" data-id="${it.id}">−</button>
+    <button class="btn sq" data-a="inc" data-id="${it.id}">+</button>
+    <button class="btn sq" data-a="del" data-id="${it.id}" title="Remove from stock">×</button></div>`}).join("")
+    :`<div class="empty">${Object.keys(stock).length?'No stock matches your search':'Nothing in the warehouse yet — add items below'}</div>`;
+}
+
+function renderCatalog(){
+  const rows=I.filter(match);
+  $("catalog").innerHTML=rows.length?rows.map(it=>`<div class="row">
+    <span class="num">#${it.id}</span>
+    <span class="nm">${esc(it.name)}<i>${it.cat} · in stock: ${stock[it.id]||0}</i></span>
+    <span class="pr">${fmt(it.price)}</span>
+    <input class="qty" type="number" min="1" value="1" id="q${it.id}">
+    <button class="btn" data-a="add" data-id="${it.id}">+ Add</button></div>`).join("")
+    :`<div class="empty">No items found</div>`;
+}
+
+function renderCharts(){
+  const mx=Math.max(1,...sales.map(r=>+r.r||0));
+  $("revchart").innerHTML=sales.map((r,i)=>{const c=i?pct(+r.r,+sales[i-1].r):null;
+    return `<div class="bar ${c==null?'':c>=0?'u':'d'}"><div style="height:${(+r.r||0)/mx*88}%"></div><span>${esc(r.p)}</span></div>`}).join("")||"";
+  const t={};I.forEach(it=>t[it.cat]=(t[it.cat]||0)+(stock[it.id]||0));
+  const m2=Math.max(1,...Object.values(t));
+  $("catchart").innerHTML=Object.keys(t).map(k=>`<div class="bar"><b style="font-family:var(--fd);font-size:16px;font-weight:400">${t[k]}</b><div style="height:${t[k]/m2*78}%"></div><span>${k}</span></div>`).join("");
+}
+
+function renderSales(){
+  $("sales").innerHTML=sales.map((r,i)=>{
+    const c=i?pct(+r.r,+sales[i-1].r):null;
+    const cell=c==null?'<span style="color:var(--gt)">—</span>':
+      `<span class="chg ${c>=0?'up':'down'}"><svg width="16" height="16" style="vertical-align:-2px;margin-right:6px;${c>=0?'':'transform:scaleY(-1)'}"><use href="#arrow"/></svg>${c>=0?'+':''}${c.toFixed(1)}%</span>`;
+    return `<tr><td><input class="cell" data-i="${i}" data-f="p" value="${esc(r.p)}"></td>
+      <td><input class="cell" type="number" data-i="${i}" data-f="u" value="${r.u}"></td>
+      <td><input class="cell" type="number" data-i="${i}" data-f="r" value="${r.r}"></td>
+      <td>${cell}</td><td><button class="btn sq" data-del="${i}">×</button></td></tr>`}).join("");
+}
+
+function renderAll(){renderStats();renderStock();renderCatalog();renderCharts();renderSales()}
+
+/* ===== EVENTS ===== */
+$("chips").innerHTML=CATS.map(c=>`<button class="chip ${c==="All"?"on":""}" data-c="${c}">${c}</button>`).join("");
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;
+  document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderStock();renderCatalog()});
+$("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();renderStock();renderCatalog()});
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]");
+  if(b){const id=+b.dataset.id,a=b.dataset.a;
+    if(a==="add"){const v=Math.max(1,parseInt($("q"+id).value)||1);stock[id]=(stock[id]||0)+v}
+    if(a==="inc")stock[id]=(stock[id]||0)+1;
+    if(a==="dec")stock[id]=Math.max(0,(stock[id]||0)-1);
+    if(a==="del")delete stock[id];
+    if(stock[id]===0)delete stock[id];
+    save("rc_stock",stock);renderAll();return}
+  const d=e.target.closest("[data-del]");
+  if(d){sales.splice(+d.dataset.del,1);save("rc_sales",sales);renderAll()}
+});
+$("sales").addEventListener("change",e=>{
+  const el=e.target;if(!el.dataset.f)return;
+  sales[+el.dataset.i][el.dataset.f]=el.dataset.f==="p"?el.value:(parseFloat(el.value)||0);
+  save("rc_sales",sales);renderStats();renderCharts();renderSales()});
+$("addrow").addEventListener("click",()=>{sales.push({p:"New period",u:0,r:0});save("rc_sales",sales);renderAll()});
+
+renderAll();
+</script>
+</body>
+</html>
